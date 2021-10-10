@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hello D3</title>
+  <script src="d3.js"></script>
+  <style>
+  </style>
+</head>
+<body>
+
+<script>
+  var body = d3.select('body');
+  var svg = body.append('svg').attr('width',1000).attr('height',500);
+  var div = body.append('div').style({width: 0, height:'20px', background: '#eee'});
+  div
+    .transition()
+    .duration(500)
+    .tween('width',function(){
+      return function(t){
+        d3.select(this).style('width',t*500+'px')
+      }
+    })
+
+
+  function createData(num){
+    var data = [];
+    while(num>=0){
+      data.push(Math.floor(Math.random()*900+100));
+      num--;
+    }
+    return data;
+  }
+
+  function render () {
+    var data = createData(5);
+    var rect = svg.selectAll('rect').data(data);
+    rect
+      .enter()
+      .append('rect')
+      .attr({
+        x: 50,
+        y: function(d,i){
+          return i*30
+        },
+        fill: '#eee',
+        height: 20
+      });
+    rect
+      .transition()
+      .duration(400)
+      .ease('exp')
+      .delay(function(d,i){
+        return i/5*400
+      })
+      .attrTween('width',function(d,i){
+        return d3.interpolate(0,d)
+      })
+      .attrTween('fill',function(d,i){
+        return d3.interpolate('#eee','#000')
+      })
+      // .attrTween('width',function(d,i){
+      //   return function(t){
+      //     return t * d;
+      //   }
+      // })
+      // .attr({
+      //   width: function(d,i){
+      //     return d
+      //   }
+      // })
+
+
+    var text = svg.selectAll('text').data(data);
+    text.enter().append('text').attr({
+      x: 0,
+      y: function(d,i){
+        return i*30+20
+      }
+    });
+    text
+      .transition()
+      .duration(400)
+      .delay(function(d,i){
+        return i/5*400
+      })
+      .text(function(d,i){
+        return d
+      })
+      .attrTween('fill',function(d,i){
+        return d3.interpolate('#eee','#000')
+      })
+  }
+
+  setInterval(render,1000);
+</script>
+
+</body>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hello D3</title>
+  <script src="d3.js"></script>
+  <style>
+    .line {
+        fill: #eee;
+        stroke: #4682B4;
+        stroke-width: 2;
+    }
+  </style>
+</head>
+<body>
+
+<div id="container"></div>
+
+<script>
+  (function(){
+    var data = [ // <-C
+        [
+            {x: 0, y: 5},{x: 1, y: 9},{x: 2, y: 7},
+            {x: 3, y: 5},{x: 4, y: 3},{x: 6, y: 4},
+            {x: 7, y: 2},{x: 8, y: 3},{x: 9, y: 2}
+        ]
+    ];
+  var xscale = d3.scale.linear()
+    .domain([0,10])
+    .range([50,450])
+  var yscale = d3.scale.linear()
+    .domain([0,10])
+    .range([450,50])
+  var line = d3.svg.area()
+    .interpolate('step-after')
+    .x(function(d) {
+      return xscale(d.x)
+    })
+    .y0(function(d) {
+      return yscale(d.y*.2)
+    })
+    .y1(function(d) {
+      return yscale(d.y)
+    })
+  var svg = d3.select('body').append('svg');
+  svg
+    .attr('width',500)
+    .attr('height',500)
+  svg
+    .selectAll('path.line')
+      .data(data)
+      .enter()
+      .append('path')
+      .classed('line',true)
+      .attr('d', function(d,i) {
+        console.log(line(d));
+        return line(d);
+      })
+  })()
+</script>
+<script>
+  (function() {
+    var fullAngle = 2 * Math.PI;
+    var data = [
+     {startAngle: 0, endAngle: 0.1*fullAngle},
+     {startAngle: 0.1*fullAngle, endAngle: 0.2*fullAngle},
+     {startAngle: 0.2*fullAngle, endAngle: 0.4*fullAngle},
+     {startAngle: 0.4*fullAngle, endAngle: 0.5*fullAngle},
+     {startAngle: 0.5*fullAngle, endAngle: 0.8*fullAngle},
+     {startAngle: 0.8*fullAngle, endAngle: 1*fullAngle},
+    ]
+    var colors = d3.scale.category20c();
+    var svg = d3.select('body').append('svg')
+        .attr('width',500).attr('height',500);
+    var arc = d3.svg.arc().outerRadius(200).innerRadius(100);
+    svg.append('g').attr('transform','translate(200,200)')
+      .selectAll('path.arc')
+      .data(data)
+      .enter()
+      .append('path')
+      .classed('arc',true)
+      .attr('fill',function(d,i) {
+        return colors(i)
+      })
+      .transition()
+      .duration(1000)
+      .attrTween('d', function(d,i) {
+        var start = {startAngle:0,endAngle:0};
+        var interpolate = d3.interpolate(start,d);
+        return function(t) {
+          return arc(interpolate(t),i)
+        }
+      })
+  })()
+</script>
+</body>r

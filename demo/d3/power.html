@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hello D3</title>
+  <script src="d3.js"></script>
+  <style>
+  </style>
+</head>
+<body>
+
+<div id="container">
+  <svg class="gauge" width="270" height="270">
+    <circle cx="135" cy="135" r="130.95" style="fill: rgb(204, 204, 204); stroke: rgb(0, 0, 0); stroke-width: 0.5px;"></circle>
+    <circle cx="135" cy="135" r="117.85499999999999" style="fill: rgb(255, 255, 255); stroke: rgb(224, 224, 224); stroke-width: 2px;"></circle>
+    <path d="M-78.70628804692163,-78.70628804692164A111.30749999999999,111.30749999999999 0 0,1 111.30749999999999,0L85.11749999999999,0A85.11749999999999,85.11749999999999 0 0,0 -60.18716144764595,-60.187161447645956Z" transform="translate(135, 135) rotate(270)" style="fill: rgb(16, 150, 24);"></path>
+    <path d="M111.30749999999999,0A111.30749999999999,111.30749999999999 0 0,1 17.4123292174655,109.93711997079329L13.315310578061855,84.06956233060663A85.11749999999999,85.11749999999999 0 0,0 85.11749999999999,0Z" transform="translate(135, 135) rotate(270)" style="fill: rgb(255, 153, 0);"></path>
+    <path d="M17.4123292174655,109.93711997079329A111.30749999999999,111.30749999999999 0 0,1 -78.70628804692163,78.70628804692164L-60.18716144764595,60.187161447645956A85.11749999999999,85.11749999999999 0 0,0 13.315310578061855,84.06956233060663Z" transform="translate(135, 135) rotate(270)" style="fill: rgb(220, 57, 18);"></path>
+    <text x="135" y="82.5" dy="15" text-anchor="middle" style="font-size: 18px; fill: rgb(51, 51, 51); stroke-width: 0px;">实时温度</text>
+    <line x1="51.26007785837372" y1="186.31589028716513" x2="40.09475490615688" y2="193.15800899212047" style="stroke: rgb(102, 102, 102); stroke-width: 1px;"></line>
+    <line x1="41.59436189336225" y1="165.3493315600495" x2="29.14027681247721" y2="169.39590910138946" style="stroke: rgb(102, 102, 102); stroke-width: 1px;"></line>
+    <line x1="37.090256360735154" y1="142.7056639391708" x2="24.035623875499837" y2="143.7330857977269" style="stroke: rgb(102, 102, 102); stroke-width: 1px;"></line>
+    <line x1="37.996658849300076" y1="119.63618010223614" x2="25.062880029206752" y2="117.58767078253429" style="stroke: rgb(102, 102, 102); stroke-width: 1px;"></line>
+    <line x1="70.18305690253513" y1="199.81694309746487" x2="56.29371195307836" y2="213.70628804692163" style="stroke: rgb(51, 51, 51); stroke-width: 2px;"></line>
+    <line x1="55.544418439950476" y1="77.27214090922548" x2="44.95034089861055" y2="69.57509303045555" style="stroke: rgb(102, 102, 102); stroke-width: 1px;"></line>
+    <line x1="71.21608355337185" y1="60.318629103506964" x2="62.711561360488105" y2="50.36111298397455" style="stroke: rgb(102, 102, 102); stroke-width: 1px;"></line>
+    <line x1="90.41245804432994" y1="47.492021743149834" x2="84.46745245024059" y2="35.824291308903156" style="stroke: rgb(102, 102, 102); stroke-width: 1px;"></line>
+    <line x1="112.07274720230208" y1="39.50111919294315" x2="109.01578016260902" y2="26.76793508533558" style="stroke: rgb(102, 102, 102); stroke-width: 1px;"></line>
+    <line x1="50.3125826523529" y1="99.92132317225405" x2="32.16527893499996" y2="92.40446385202277" style="stroke: rgb(51, 51, 51); stroke-width: 2px;"></line>
+    <line x1="157.9272527976981" y1="39.50111919294319" x2="160.98421983739115" y2="26.76793508533561" style="stroke: rgb(102, 102, 102); stroke-width: 1px;"></line>
+    <line x1="179.58754195567025" y1="47.49202174314992" x2="185.5325475497596" y2="35.824291308903256" style="stroke: rgb(102, 102, 102); stroke-width: 1px;"></line>
+    <line x1="198.78391644662833" y1="60.31862910350711" x2="207.2884386395121" y2="50.36111298397471" style="stroke: rgb(102, 102, 102); stroke-width: 1px;"></line>
+    <line x1="214.4555815600496" y1="77.27214090922561" x2="225.04965910138958" y2="69.5750930304557" style="stroke: rgb(102, 102, 102); stroke-width: 1px;"></line>
+    <line x1="135" y1="43.33500000000001" x2="135" y2="23.69250000000001" style="stroke: rgb(51, 51, 51); stroke-width: 2px;"></line>
+    <line x1="232.00334115069995" y1="119.63618010223632" x2="244.93711997079328" y2="117.58767078253449" style="stroke: rgb(102, 102, 102); stroke-width: 1px;"></line>
+    <line x1="232.90974363926483" y1="142.70566393917096" x2="245.96437612450012" y2="143.73308579772709" style="stroke: rgb(102, 102, 102); stroke-width: 1px;"></line>
+    <line x1="228.4056381066377" y1="165.3493315600497" x2="240.85972318752272" y2="169.3959091013897" style="stroke: rgb(102, 102, 102); stroke-width: 1px;"></line>
+    <line x1="218.7399221416262" y1="186.31589028716525" x2="229.905245093843" y2="193.15800899212064" style="stroke: rgb(102, 102, 102); stroke-width: 1px;"></line>
+    <line x1="219.6874173476471" y1="99.92132317225403" x2="237.83472106500005" y2="92.40446385202276" style="stroke: rgb(51, 51, 51); stroke-width: 2px;"></line>
+    <line x1="199.8169430974649" y1="199.81694309746487" x2="213.70628804692166" y2="213.70628804692163" style="stroke: rgb(51, 51, 51); stroke-width: 2px;"></line>
+    <text x="76.6647512122816" y="193.33524878771837" dy="5.666666666666667" text-anchor="start" style="font-size: 17px; fill: rgb(51, 51, 51); stroke-width: 0px;" id="min"></text>
+    <text x="193.3352487877184" y="193.33524878771837" dy="5.666666666666667" text-anchor="end" style="font-size: 17px; fill: rgb(51, 51, 51); stroke-width: 0px;" id="max"></text>
+    <g class="pointerContainer">
+      <path d="M0,-111.30749999999999L-0.9287101991643993,-95.20505753959308C-1.8574203983287987,-79.10261507918618,-3.7148407966575974,-46.89773015837239,-4.643550995822001,-25.897672618779293C-5.572261194986405,-4.8976150791862,-5.572261194986415,4.8976150791862,-4.643550995822015,13.4574226187793C-3.714840796657616,22.0172301583724,-1.857420398328808,29.341615079186194,-4.6629367034256575e-15,29.341615079186198C1.8574203983287987,29.341615079186194,3.7148407966575974,22.0172301583724,4.643550995821997,13.4574226187793C5.572261194986396,4.8976150791862,5.572261194986396,-4.8976150791862,4.643550995821997,-25.897672618779296C3.7148407966575974,-46.89773015837239,1.8574203983287987,-79.10261507918618,0.9287101991643993,-95.20505753959308L0,-111.30749999999999" transform="translate(135, 135) rotate(0)" style="fill: rgb(220, 57, 18); stroke: rgb(198, 51, 16); fill-opacity: 0.7;" id="pointer"></path>
+      <circle cx="135" cy="135" r="15.713999999999999" style="fill: rgb(70, 132, 238); stroke: rgb(102, 102, 102); opacity: 1;"></circle>
+      <text x="135" y="214.25" dy="13.5" text-anchor="middle" style="font-size: 16px; fill: rgb(244, 0, 0); font-weight: 700; stroke-width: 0px;" id="current"></text>
+    </g>
+  </svg>
+</div>
+
+<script>
+  var _min = d3.select('#min');
+  var _max = d3.select('#max');
+  var _current = d3.select('#current');
+  var _pointer = d3.select('#pointer');
+  var _currentRotation = 0;
+
+  function show (value, min, max) {
+    _min.text(min);
+    _max.text(max);
+    _current.text(value +'℃')
+    _pointer
+      .transition()
+      .duration(500)
+      .attrTween("transform", function(){
+        var targetRotation = (value - min)/(max - min)*270 - 135;
+        var currentRotation = _currentRotation || targetRotation;
+        _currentRotation = targetRotation;
+
+        return function(step)
+        {
+          var rotation = currentRotation + (targetRotation-currentRotation)*step;
+          return 'translate(135, 135) rotate('+ rotation +')';
+        }
+      });
+  }
+
+  setInterval(function(){
+    var value = Math.round(Math.random()*100);
+    show(value, 0, 100);
+  },1000);
+</script>
+
+</body>
+</html>

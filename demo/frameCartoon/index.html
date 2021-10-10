@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FrameCartoon Demo</title>
+  <script src="frameCartoon.js"></script>
+  <style>
+    h2{
+      font-family: 'Microsoft Yahei';
+      font-weight: bold;
+      border-bottom: 1px solid #000;
+    }
+  </style>
+</head>
+<body>
+  <h2>水平动画演示</h2>
+  <div id="demo1"></div>
+  <pre>
+    var frameCartoon1 = new FrameCartoon({
+      el: '#demo1',
+      frameNum: 8,
+      framerate: 12,
+      url: 'static/demo1.jpg',
+      direction: 'horizontal',
+      iteration: 'infinite'
+    });
+    frameCartoon1.start();
+  </pre>
+  <script>
+    var frameCartoon1 = new FrameCartoon({
+      el: '#demo1',
+      frameNum: 8,
+      framerate: 12,
+      url: 'static/demo1.jpg',
+      direction: 'horizontal',
+      iteration: 'infinite'
+    });
+    frameCartoon1.start();
+  </script>
+
+  <h2>垂直动画演示</h2>
+  <div id="demo2"></div>
+  <pre>
+    var frameCartoon2 = new FrameCartoon({
+      el: '#demo2',
+      frameNum: 10,
+      framerate: 12,
+      url: 'static/demo2.png',
+      direction: 'vertical',
+      iteration: 'infinite'
+    });
+    frameCartoon2.start();
+  </pre>
+  <script>
+    var frameCartoon2 = new FrameCartoon({
+      el: '#demo2',
+      frameNum: 10,
+      framerate: 12,
+      url: 'static/demo2.png',
+      direction: 'vertical',
+      iteration: 'infinite'
+    });
+    frameCartoon2.start();
+  </script>
+
+  <h2>控制动画演示</h2>
+  <div id="demo3"></div>
+  <button id="start">开始</button>
+  <button id="stop">停止</button>
+  <pre>
+    var frameCartoon3 = new FrameCartoon({
+      el: '#demo3',
+      frameNum: 8,
+      framerate: 12,
+      url: 'static/demo3.jpg',
+      direction: 'vertical',
+      iteration: 'infinite'
+    });
+  </pre>
+  <script>
+    var frameCartoon3 = new FrameCartoon({
+      el: '#demo3',
+      frameNum: 8,
+      framerate: 12,
+      url: 'static/demo3.jpg',
+      direction: 'vertical',
+      iteration: 'infinite'
+    });
+
+    document.querySelector('#start').onclick = function(){
+      frameCartoon3.start();
+    }
+
+    document.querySelector('#stop').onclick = function(){
+      frameCartoon3.stop();
+    }
+  </script>
+
+  <h2>循环播放动画10次演示</h2>
+  <div id="demo4"></div>
+  <pre>
+    var frameCartoon4 = new FrameCartoon({
+      el: '#demo4',
+      frameNum: 8,
+      framerate: 12,
+      url: 'static/demo4.png',
+      direction: 'vertical',
+      iteration: 10
+    });
+  </pre>
+  <script>
+    var frameCartoon4 = new FrameCartoon({
+      el: '#demo4',
+      frameNum: 8,
+      framerate: 12,
+      url: 'static/demo4.png',
+      direction: 'vertical',
+      iteration: 10
+    });
+    frameCartoon4.start();
+  </script>
+
+  <h2>每次动画完成调用回调事件</h2>
+  <div id="demo5"></div>
+  <div>动画循环播放了<span id="count5" style="color:#f00;">0</span>次</div>
+  <pre>
+    var frameCartoon5 = new FrameCartoon({
+      el: '#demo5',
+      frameNum: 8,
+      framerate: 12,
+      url: 'static/demo5.png',
+      direction: 'vertical',
+      complete: function(count){
+        document.querySelector('#count5').innerHTML = count;
+      }
+    });
+  </pre>
+  <script>
+    var frameCartoon5 = new FrameCartoon({
+      el: '#demo5',
+      frameNum: 8,
+      framerate: 12,
+      url: 'static/demo5.png',
+      direction: 'vertical',
+      complete: function(count){
+        document.querySelector('#count5').innerHTML = count;
+      }
+    });
+    frameCartoon5.start();
+  </script>
+</body>
+</html>

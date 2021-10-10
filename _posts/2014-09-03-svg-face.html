@@ -1,0 +1,187 @@
+---
+layout: default
+title:  SVG演示-表情
+---
+<!--
+<svg width=200 height=200 viewBox="0 0 200 200" id="svgElement" stroke-width=3 fill=none stroke=green>
+  <defs>
+    <filter id="dropshadow" height="130%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="3"/>
+      <feOffset dx="2" dy="2" result="offsetblur"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+    <circle cx=100 cy=100 r=80 filter="url(#dropshadow)/>
+    <circle cx=100 cy=100 r=70 />
+    <polyline points="60 80, 70 70, 80 80" />
+    <polyline points="120 80, 130 70, 140 80" />
+    <polyline points="90 120, 100 130, 110 120" />
+</svg>
+ -->
+<script type="text/javascript" src="//g.alicdn.com/kissy/k/1.4.7/seed-min.js"></script>
+<style type="text/css">
+    #demo {
+        overflow: hidden;
+    }
+    #demo div{
+        float: left;
+    }
+    circle{
+        /*-webkit-svg-shadow: 0 0 7px #53BE12;*/
+    }
+</style>
+<div id="demo">
+</div>
+
+<script type="text/javascript">
+/*
+    name: SVG表情生成工具
+    param:
+        container: 表情加载容器（eg. #demo|.demo|document.getElement('demo')）
+        level: 表情级别（0-100）
+*/
+function createFace(cfg){
+    var container = cfg.container || document.body;
+    var level = cfg.level || 0;
+    var width = cfg.width || 200;
+    var height = cfg.height || 200;
+
+    function createElementNS(nodeName){
+        return document.createElementNS('//www.w3.org/2000/svg',nodeName);
+    }
+    /*构建画面*/
+    function createSVG(){
+        var svg = createElementNS('svg');
+        svg.setAttribute('width',width);
+        svg.setAttribute('height',height);
+        svg.setAttribute('viewBox','0 0 200 200');
+        svg.setAttribute('stroke',calcColor());
+        svg.setAttribute('fill','none');
+        svg.setAttribute('stroke-width','3');
+        svg.appendChild(createdefs());
+        if (level > 0) {
+            svg.appendChild(createCircle(100,100,80,5,true));
+        }
+        svg.appendChild(createCircle(100,100,70,2,false));
+        var eyeRY = level<=50?1:level/10;
+        svg.appendChild(createellipse(70,80,10,eyeRY));
+        svg.appendChild(createellipse(130,80,10,eyeRY));
+        var mouthY = (level/100)*40+100;
+        if (mouthY==120) {mouthY--}
+        svg.appendChild(createpath('M 80 120, Q 100 '+mouthY+' 120 120,z'));
+        return svg;
+    }
+    /*构建高光*/
+    function createdefs(){
+        var defs = createElementNS('defs');
+        var filter = createElementNS('filter');
+        filter.setAttribute('id','dropshadow');
+        var feGaussianBlur = createElementNS('feGaussianBlur');
+        feGaussianBlur.setAttribute('stdDeviation',4);
+        var feMerge = createElementNS('feMerge');
+        var feMergeNode1 = createElementNS('feMergeNode');
+        var feMergeNode2 = createElementNS('feMergeNode');
+        feMergeNode2.setAttribute('in','SourceGraphic');
+        feMerge.appendChild(feMergeNode1);
+        feMerge.appendChild(feMergeNode2);
+        filter.appendChild(feGaussianBlur);
+        filter.appendChild(feMerge);
+        defs.appendChild(filter);
+        return defs;
+    }
+    /*构建圆脸*/
+    function createCircle(cx,cy,r,width,b){
+        var circle = createElementNS('circle');
+        circle.setAttribute('cx',cx);
+        circle.setAttribute('cy',cy);
+        circle.setAttribute('r',r);
+        circle.setAttribute('filter','url(#dropshadow)');
+        if (width) {
+            circle.setAttribute('stroke-width',width);
+        };
+        if (b) {
+            var perimeter = 3.14*2*r;
+            var length = perimeter/100*level;
+            var otherLength = perimeter-length;
+            var toDasharray = length+' '+otherLength;
+            var fromDasharray = '0 '+perimeter
+            circle.setAttribute('stroke-dasharray',toDasharray);
+            circle.appendChild(createAnimate('stroke-dasharray',fromDasharray,toDasharray));
+        };
+        // <animate attributeType="XML" attributeName="r" from=0 to=50 dur="1s"></animate>
+        return circle;
+    }
+    /*构建眼睛*/
+    function createellipse(cx,cy,rx,ry){
+        var ellipse = createElementNS('ellipse');
+        ellipse.setAttribute('cx',cx);
+        ellipse.setAttribute('cy',cy);
+        ellipse.setAttribute('rx',rx);
+        ellipse.setAttribute('ry',ry);
+        ellipse.setAttribute('stroke-width',0);
+        ellipse.setAttribute('fill',calcColor());
+        ellipse.appendChild(createAnimate('ry',1,ry));
+        return ellipse;
+    }
+    /*构建嘴巴*/
+    function createpath(d){
+        var path = createElementNS('path');
+        path.setAttribute('d',d);
+        path.setAttribute('fill',calcColor());
+        path.setAttribute('stroke-width',0);
+        path.appendChild(createAnimate('d','M 80 120, Q 100 100 120 120,z',d));
+        return path;
+    }
+    /*构建动画*/
+    function createAnimate(name,from,to){
+        var animate = createElementNS('animate');
+        animate.setAttribute('attributeType','XML');
+        animate.setAttribute('attributeName',name);
+        animate.setAttribute('from',from);
+        animate.setAttribute('to',to);
+        animate.setAttribute('dur','.5s');
+        return animate;
+    }
+    /*计算表情颜色*/
+    /**
+     * r:212 g:89 b:84
+     * r:255 g:153 b:0
+     * r:123 g:219 b:68
+     */
+    function calcColor(){
+        var color;
+        var calc = function(start,end,index){
+            return Math.floor(start+(end-start)*((level-50*index)/50));
+        }
+        if (level <= 50) {
+            color = 'rgb('+calc(212,255,0)+','+calc(89,153,0)+','+calc(84,0,0)+')'
+        } else {
+            color = 'rgb('+calc(255,123,1)+','+calc(153,219,1)+','+calc(0,68,1)+')'
+        };
+        return color;
+    }
+
+    container = (typeof container == 'string') ? document.querySelector(container) : container;
+    level = level > 100 ? 100 : (level < 0 ? 0 : level);
+    container.innerHTML = '';
+    container.appendChild(createSVG());
+}
+
+var face = function(){
+    document.getElementById('demo').innerHTML = '';
+    for (var i = 0; i <= 10; i++) {
+        var div = document.createElement('div');
+        createFace({
+            container: div,
+            level: i*10
+        });
+        document.getElementById('demo').appendChild(div);
+    };
+}
+face();
+// setInterval(face,1000);
+
+</script>

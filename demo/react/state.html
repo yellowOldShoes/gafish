@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Demo</title>
+  <script src="react.js"></script>
+  <script src="react-dom.js"></script>
+  <script src="browser.min.js"></script>
+</head>
+<body>
+
+  <div id="container"></div>
+  <script type="text/babel">
+    var container = document.querySelector('#container');
+    var LightingCounter = React.createClass({
+      getInitialState: function(){
+        return {
+          strikes: 0
+        }
+      },
+      componentDidMount: function(){
+        setInterval(this.timerTick, 1000);
+      },
+      timerTick: function(){
+        this.setState({
+          strikes: this.state.strikes+100
+        });
+      },
+      render: function(){
+        return (
+          <h1>{this.state.strikes}</h1>
+        );
+      }
+    });
+    var LightingCounterDisplay = React.createClass({
+      render: function(){
+        var divStyle = {
+          width: 250,
+          textAlign: "center",
+          backgroundColor: "black",
+          padding: 40,
+          fontFamily: "sans-serif",
+          color: "#999",
+          borderRadius: 10
+        };
+        return (
+          <div style={divStyle}>
+            <LightingCounter />
+          </div>
+        );
+      }
+    });
+    ReactDOM.render(
+      <div>
+        <LightingCounterDisplay />
+      </div>
+      ,container
+    );
+  </script>
+
+</body>
+</html>

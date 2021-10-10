@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Demo</title>
+  <script src="react.js"></script>
+  <script src="react-dom.js"></script>
+  <script src="browser.min.js"></script>
+  <style>
+  #container {   padding: 50px;   background-color: #EEE; }
+  #container h1 {   font-size: 48px;   font-family: sans-serif;   color: #0080a8; }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+  <script type="text/babel">
+    var InitState = {
+      getInitialState: function(){
+        return {
+          age: 35
+        };
+      },
+      handleClick: function(){
+        alert(this.props.name +'===='+ this.state.age)
+      },
+    };
+    var Module1 = React.createClass({
+      mixins: [InitState],
+      render: function(){
+        return (
+          <div onClick={this.handleClick}>
+            click
+          </div>
+        );
+      }
+    });
+    var Module2 = React.createClass({
+      mixins: [InitState],
+      render: function(){
+        return (
+          <div onClick={this.handleClick}>
+            click too
+          </div>
+        );
+      }
+    });
+
+    var container = document.querySelector('#container');
+    ReactDOM.render(
+      <div>
+        <Module1 name="haha" />
+        <Module2 name="gafish" />
+      </div>,
+      container
+    );
+  </script>
+
+</body>
+</html>

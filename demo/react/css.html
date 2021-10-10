@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Demo</title>
+  <script src="react.js"></script>
+  <script src="react-dom.js"></script>
+  <script src="browser.min.js"></script>
+</head>
+<body>
+
+  <div id="container"></div>
+  <script type="text/babel">
+    var container = document.querySelector('#container');
+    var Letter = React.createClass({
+      render: function(){
+        var letterStyle = {
+          fontSize: 20,
+          color:  this.props.color || '#fff',
+          padding: 20,
+          margin: 20,
+          background: '#000'
+        }
+        return (
+          <div style={letterStyle}>
+            {this.props.children}
+          </div>
+        )
+      }
+    });
+    ReactDOM.render(
+      <div>
+        <Letter>A</Letter>
+        <Letter color="#ff0">B</Letter>
+        <Letter color="#f0f">C</Letter>
+      </div>
+      , container
+    );
+  </script>
+
+</body>
+</html>

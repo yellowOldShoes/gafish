@@ -1,0 +1,201 @@
+---
+layout: default
+title:  SVG演示-创意表单
+---
+
+<style>
+    html,
+    body{
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+    }
+    li{
+        list-style: none;
+    }
+    input[type=radio],
+    input[type=checkbox]{
+        opacity: 0;
+        position: absolute;
+    }
+    #demo svg{
+        width: 20px;
+        height: 20px;
+        position: absolute;
+        top: 2px;
+        left: 2px;
+    }
+    #demo label{
+        position: relative;
+        display: block;
+        margin: 5px 0;
+    }
+    #demo label:before{
+        display: inline-block;
+        vertical-align: middle;
+        content: '';
+        width: 20px;
+        height: 20px;
+        border: 2px solid #000;
+    }
+</style>
+<form action="" id="demo">
+    <div>
+        <h3>问题一：淘宝网的域名是？</h3>
+        <ul>
+            <li>
+                <label>
+                    <input type="radio" name="domain">
+                    www.tmall.com
+                </label>
+            </li>
+            <li>
+                <label>
+                    <input type="radio" name="domain">
+                    www.taobao.com
+                </label>
+            </li>
+            <li>
+                <label>
+                    <input type="radio" name="domain">
+                    www.etao.com
+                </label>
+            </li>
+        </ul>
+    </div>
+    <div>
+        <h3>问题二：哪些是杭州特产？</h3>
+        <ul>
+            <li>
+                <label>
+                    <input type="checkbox" name="company">
+                    西湖龙井
+                </label>
+            </li>
+            <li>
+                <label>
+                    <input type="checkbox" name="company">
+                    糖桂花
+                </label>
+            </li>
+            <li>
+                <label>
+                    <input type="checkbox" name="company">
+                    西湖醋鱼
+                </label>
+            </li>
+        </ul>
+    </div>
+</form>
+<script>
+(function(win,doc){
+    var NS = '//www.w3.org/2000/svg';
+    var PATH = {
+        radio: [
+            'M71.763,43.692c13.719,10.921-2.459,24.386-13.157,29.218c-7.055,3.187-15.364,4.52-22.933,2.631 c-8.837-2.206-13.675-10.132-17.331-17.866c-3.131-6.624-4.194-14.403-0.362-20.935c3.403-5.801,10.1-8.995,16.277-10.874 c14.821-4.508,32.681-2.681,46.367,4.486'
+        ],
+        checkbox: [
+            'M 10 50,L 30 70,L 90 10'
+        ]
+    }
+
+    function SVGForm(container){
+        var radios = container.querySelectorAll('input[type=radio]');
+        var checkboxs = container.querySelectorAll('input[type=checkbox]');
+
+        radios = Array.prototype.slice.call(radios);
+        checkboxs = Array.prototype.slice.call(checkboxs);
+
+        if (radios.length) {
+            initRadio(radios);
+        }
+
+        if (checkboxs.length) {
+            initCheckbox(checkboxs);
+        }
+    }
+
+    function initRadio(radios){
+        radios.forEach(function(r){
+            r.addEventListener('change',function(){
+                clearRadioSvg(this);
+                drawSvg(this,'radio');
+            });
+        });
+    }
+
+    function initCheckbox(checkboxs){
+        checkboxs.forEach(function(c){
+            c.addEventListener('change',function(){
+                if (this.checked) {
+                    drawSvg(this,'checkbox');
+                } else{
+                    clearCheckboxSvg(this);
+                }
+            });
+        });
+    }
+
+    function clearRadioSvg(r){
+        var name = r.getAttribute('name');
+        var inputs = doc.querySelectorAll('input[name='+name+']');
+        inputs = Array.prototype.slice.call(inputs);
+        inputs.forEach(function(input){
+            var svg = input.parentNode.querySelector('svg');
+            if (svg) {
+                input.parentNode.removeChild(svg);
+            }
+        });
+    }
+
+    function clearCheckboxSvg(c){
+        var svg = c.parentNode.querySelector('svg');
+        c.parentNode.removeChild(svg);
+    }
+
+    function drawSvg(r,t){
+        var svg = createSvg();
+        r.parentNode.insertBefore(svg,r);
+
+        var ds = PATH[t];
+        ds.forEach(function(d){
+            var path = createPath(d);
+            var length = path.getTotalLength();
+            path.setAttribute('stroke-dasharray',length+' '+length);
+            path.setAttribute('stroke-dashoffset',length);
+            var animate = createAnimate(length);
+            path.appendChild(animate);
+            svg.appendChild(path);
+        });
+    }
+
+    function createSvg(){
+        var svg = doc.createElementNS(NS,'svg');
+        svg.setAttribute('viewBox','0 0 100 100');
+        return svg;
+    }
+
+    function createPath(d){
+        var path = doc.createElementNS(NS,'path');
+        path.setAttribute('d',d);
+        path.setAttribute('stroke','#000');
+        path.setAttribute('stroke-width','10');
+        path.setAttribute('fill','none');
+        return path;
+    }
+
+    function createAnimate(length){
+        var animate = doc.createElementNS(NS,'animate');
+        animate.setAttribute('attributeName','stroke-dashoffset');
+        animate.setAttribute('from',length);
+        animate.setAttribute('to',0);
+        animate.setAttribute('dur','.5s');
+        animate.setAttribute('fill','freeze');
+        return animate;
+    }
+
+    new SVGForm(doc.querySelector('#demo'));
+
+}(window,document))
+</script>

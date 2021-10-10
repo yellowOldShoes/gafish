@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hello AngularJS</title>
+  <script src="angular1.2.29.js"></script>
+</head>
+<body>
+  <!--
+  <div ng-controller="myController">
+    {{name}}
+  </div>
+   -->
+
+  <script>
+    // angular.module('myApp', []).controller('myController', function($scope){
+    //   $scope.name = 'gafish';
+    // })
+    // angular.bootstrap(document.body, ['myApp']);
+  </script>
+
+  <script>
+    // angular.module('myApp', []).run(function($rootScope){
+    //   $rootScope.name = 'gafish';
+    // })
+    // angular.bootstrap(document.body, ['myApp']).invoke(['$compile', '$rootScope', function(compile, rootscope){
+    //     var $ = angular.element;
+    //     var $n = $('<div>{{name}}</div>');
+    //     $(document.body).append(compile($n)(rootscope));
+    //     rootscope.$digest();
+    // }]);
+  </script>
+
+
+  <script>
+    angular.module('my_App', []).directive('myApp', ['$timeout', function(timeout){
+
+      return {
+        restrict: 'A',
+        scope: {
+          'callback': '=myApp'
+        },
+        link: function($scope){
+          timeout(function(){
+            $scope.callback({
+              init: function(){
+                alert('init')
+              }
+            })
+          })
+        }
+      }
+
+    }])
+    angular.bootstrap(document.body, ['my_App']).invoke(['$compile', '$rootScope', function(compile, rootscope){
+        var $ = angular.element;
+        var $n = $('<div></div>').attr('my-app','callback');
+        rootscope.callback = function(obj){
+          obj.init();
+        }
+        $(document.body).append(compile($n)(rootscope));
+        rootscope.$digest();
+    }]);
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,95 @@
+---
+layout: default
+title:  SVG演示-滚轮效果
+---
+
+<svg width=600 height=200 viewBox="0 0 600 200" id="svgElement">
+    <!--
+    <g id="circle1">
+        <circle cx=100 cy=100 r=100 fill="#f40" stroke=black stroke-width=2 stroke-dasharray=10 />
+        <line x1=0 y1=100 x2=200 y2=100 stroke=white />
+        <line x1=100 y1=0 x2=100 y2=200 stroke=white />
+    </g>
+    <g id="circle2">
+        <circle cx=250 cy=100 r=50 fill="#f40" stroke=black stroke-width=2 stroke-dasharray=10 />
+        <line x1=200 y1=100 x2=300 y2=100 stroke=white />
+        <line x1=250 y1=50 x2=250 y2=150 stroke=white />
+    </g>
+    <g id="circle3">
+        <circle cx=380 cy=100 r=80 fill="#f40" stroke=black stroke-width=2 stroke-dasharray=10 />
+        <line x1=300 y1=100 x2=460 y2=100 stroke=white />
+        <line x1=380 y1=20 x2=380 y2=180 stroke=white />
+    </g>
+    -->
+</svg>
+
+<script type="text/javascript">
+    var svgElement = document.getElementById('svgElement');
+    var fragment = document.createDocumentFragment();
+    var gears = [
+        {
+            cx: 100,
+            cy: 100,
+            r: 100,
+            clockwise: +1
+        },
+        {
+            cx: 250,
+            cy: 100,
+            r: 50,
+            clockwise: -1
+        },
+        {
+            cx: 380,
+            cy: 100,
+            r: 80,
+            clockwise: +1
+        }
+    ];
+    gears.forEach(function(gear,i){
+        gear.index = i;
+        gear.id = 'g'+i;
+        gear.currentAngle = 0;
+        var g = document.createElementNS('//www.w3.org/2000/svg','g');
+        g.id = 'circle'+(i+1);
+        var circle = document.createElementNS('//www.w3.org/2000/svg','circle');
+        circle.setAttribute('cx',gear.cx);
+        circle.setAttribute('cy',gear.cy);
+        circle.setAttribute('r',gear.r);
+        circle.setAttribute("fill","#f40");
+        circle.setAttribute("stroke","#000");
+        circle.setAttribute("stroke-dasharray","10");
+        g.appendChild(circle);
+        var line1 = document.createElementNS('//www.w3.org/2000/svg','line');
+        line1.setAttribute('x1',gear.cx-gear.r);
+        line1.setAttribute('y1',gear.cy);
+        line1.setAttribute('x2',gear.cx+gear.r);
+        line1.setAttribute('y2',gear.cy);
+        line1.setAttribute('stroke','#fff');
+        g.appendChild(line1);
+        var line2 = document.createElementNS('//www.w3.org/2000/svg','line');
+        line2.setAttribute('x1',gear.cx);
+        line2.setAttribute('y1',gear.cy-gear.r);
+        line2.setAttribute('x2',gear.cx);
+        line2.setAttribute('y2',gear.cy+gear.r);
+        line2.setAttribute('stroke','#fff');
+        g.appendChild(line2);
+        gear.obj = g;
+        fragment.appendChild(g);
+    });
+    svgElement.appendChild(fragment);
+
+    var requestAnimationFrameID = requestAnimationFrame(doAnim);
+    var thetaDelta = 0.3;
+    function doAnim(){
+        gears.forEach(function(gear,i){
+            if (gear.currentAngle > 360) {
+                gear.currentAngle = 0;
+            };
+            var angle = gear.clockwise*thetaDelta*(100/gear.r);
+            gear.obj.setAttribute('transform','rotate('+ gear.currentAngle +','+ gear.cx +','+ gear.cy +')');
+            gear.currentAngle += angle;
+        });
+        requestAnimationFrameID = requestAnimationFrame(doAnim);
+    }
+</script>

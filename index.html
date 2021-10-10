@@ -1,0 +1,53 @@
+---
+layout: index
+title: 徐辉的博客
+---
+
+<div class="main clearfix">
+  <div class="column">
+    <h3>文章</h3>
+    <ul>
+        <li><a href="https://github.com/gafish/gafish.github.com/issues/1" target="_blank">github搭建博客入门教程</a></li>
+        <li><a href="https://github.com/gafish/gafish.github.com/issues/2" target="_blank">移动端的头部标签和 meta</a></li>
+        <li><a href="https://github.com/gafish/gafish.github.com/issues/3" target="_blank">数据监控页面稳定性方案与实践</a></li>
+        <li><a href="https://github.com/gafish/gafish.github.com/issues/4" target="_blank">D3.js 入门教程系列</a></li>
+        <li><a href="https://github.com/gafish/gafish.github.com/issues/5" target="_blank">D3.js 进阶教程系列</a></li>
+        <li><a href="https://github.com/gafish/gafish.github.com/issues/6" target="_blank">Object.observe 从ES7草案中移除后的解决方案</a></li>
+        <li><a href="https://github.com/gafish/gafish.github.com/issues/8" target="_blank">Less 最佳实践</a></li>
+        <li><a href="https://github.com/gafish/gafish.github.com/issues/10" target="_blank">也讲讲对D3 clipAngle方法的理解</a></li>
+    </ul>
+  </div>
+  <div class="column">
+    <h3>翻译</h3>
+    <ul>
+        <li><a href="https://github.com/gafish/gafish.github.com/issues/9" target="_blank">【译】在LESS中执行JavaScript</a></li>
+        <li><a href="https://github.com/gafish/react-website-cn" target="_blank">【译】React 官网中文</a></li>
+        <li><a href="https://github.com/gafish/gafish.github.com/issues/16" target="_blank">【译】Create React App 中文README</a></li>
+        <li><a href="https://github.com/gafish/gafish.github.com/issues/18" target="_blank">【译】prop-types 中文README</a></li>
+    </ul>
+  </div>
+  <div class="column">
+    <h3>Demo</h3>
+    <ul>
+    {% for post in site.posts %}
+        <li><a href="{{ post.url }}" target="_blank">{{ post.title }}</a><span>({{ post.date | date: "%Y-%m-%d" }})</span></li>
+    {% endfor %}
+    </ul>
+  </div>
+  <div class="column">
+    <h3>作品</h3>
+    <ul>
+      <li><a href="https://www.npmjs.com/package/pictures" target="_blank">Pictures - 本地图片预览</a></li>
+      <li><a href="https://chrome.google.com/webstore/detail/%E9%98%BF%E9%87%8C%E7%94%B5%E5%BD%B1%E6%B4%BE/mdhjophanlgbocboopnfapdeaceiidok" target="_blank">Alimovie - 电影派Chrome插件</a></li>
+    </ul>
+  </div>
+  <div class="column">
+    <h3>资源</h3>
+    <ul>
+      <li><a href="http://unicode-table.com/" target="_blank">Unicode® character table</a></li>
+      <li><a href="http://jsfiddle.net/" target="_blank">JsFiddle</a></li>
+      <li><a href="http://api.jquery.com/" target="_blank">jQuery API</a></li>
+      <li><a href="http://nodejs.cn/api/" target="_blank">NodeJS API</a></li>
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Flex</title>
+  <style>
+    div{
+      box-sizing: border-box;
+      width: 100%;
+      padding: 10px;
+      background: #eee;
+      border: 1px solid #ddd;
+    }
+    .box{
+      display: flex;
+      width: 300px;
+      /*flex-direction: row-reverse;*/
+      /*flex-wrap: wrap-reserve;*/
+      flex-flow: row row;
+      /*justify-content: space-around;*/
+      align-items: baseline;
+      align-content: flex-end;
+    }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <div class="item">
+      1
+    </div>
+    <div class="item">
+      2
+    </div>
+    <div class="item">
+      3
+    </div>
+    <div class="item">
+      1
+    </div>
+    <div class="item">
+      2
+    </div>
+    <div class="item">
+      3
+    </div>
+      <div class="item">3-1</div>
+      <div class="item">3-2</div>
+      <div class="item">3-3</div>
+  </div>
+</body>
+</html>

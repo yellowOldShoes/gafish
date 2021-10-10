@@ -1,0 +1,173 @@
+---
+layout: default
+title: Backbone演示-查看图片小组件
+---
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    #photoApp{
+      margin: 50px;
+      padding: 50px;
+      border: 1px solid #eee;
+      font-size: 12px;
+    }
+    #newPhoto{
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+    }
+    #status{
+      display: none;
+      margin: 10px 0 0;
+      background: #eee;
+      padding: 10px;
+    }
+    #list{
+      list-style: none;
+      overflow: hidden;
+    }
+    #list li{
+      float: left;
+      margin: 10px 10px 0 0;
+    }
+    #list img{
+      width: 100px;
+      height: 100px;
+    }
+    #preview{
+      cursor: pointer;
+      display: none;
+      margin-top: 10px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+</style>
+
+<div id="photoApp">
+  <header>
+    <input type="text" id="newPhoto" placeholder="输入图片地址后按回车键">
+  </header>
+  <section>
+    <div id="status"></div>
+    <ul id="list"></ul>
+    <div id="preview"></div>
+  </section>
+</div>
+
+<script src="//cdn.bootcss.com/jquery/2.1.4/jquery.js"></script>
+<script src="//cdn.bootcss.com/underscore.js/1.8.3/underscore.js"></script>
+<script src="//cdn.bootcss.com/backbone.js/1.2.1/backbone.js"></script>
+<script>
+
+  $(function(){
+
+    var Router = Backbone.Router.extend({
+      routes: {
+        '!preview/:order': 'preview',
+        'home': 'home'
+      },
+      preview: function(order){
+        App.show(order*1);
+      },
+      home: function(order){
+        App.home();
+      }
+    })
+
+    var Photo = Backbone.Model.extend({
+      defaults: function(){
+        return {
+          order: Photos.nextOrder(),
+          image: 'https://img.alicdn.com/tps/i2/TB1B7wFIpXXXXawXpXXP5hz3FXX-296-360.jpg'
+        }
+      }
+    })
+
+    var PhotoList = Backbone.Collection.extend({
+      model: Photo,
+      comparator: 'order',
+      nextOrder: function(){
+        if (!this.length) {return 1};
+        return this.last().get('order')+1
+      }
+    })
+
+    var PhotoView = Backbone.View.extend({
+      tagName: 'li',
+      events: {},
+      template: _.template($('#photo-template').html()),
+      initialize: function(){
+        this.listenTo(Photos,'change',this.render);
+      },
+      render: function(){
+        this.$el.html(this.template(this.model.toJSON()));
+        return this;
+      }
+    })
+
+    var AppView = Backbone.View.extend({
+      el: $('#photoApp'),
+      events: {
+        'keypress #newPhoto': 'createOnEnter',
+        'click #preview': 'back'
+      },
+      initialize: function(){
+        this.input = $('#newPhoto');
+        this.list = $('#list');
+        this.preview = $('#preview');
+        this.status = $('#status');
+        this.listenTo(Photos,'add',this.addOne);
+        this.listenTo(Photos,'all',this.render);
+      },
+      addOne: function(photo){
+        var view = new PhotoView({
+          model: photo,
+          photos: Photos
+        });
+        this.preview.hide();
+        this.list.show().append(view.render().el);
+      },
+      render: function(){
+        var count = Photos.length;
+        if (count > 0) {
+          this.status.show().html('当前共有'+count+'张照片');
+        } else{
+          this.status.hide();
+        };
+      },
+      createOnEnter: function(e){
+        if (e.keyCode != 13 || !this.input.val()) {return};
+        Photos.add({image: this.input.val()});
+        this.input.val('');
+      },
+      show: function(order){
+        var model = Photos.findWhere({'order': order});
+        var img = model ? model.get('image') : 'https://img.alicdn.com/tps/i2/TB1B7wFIpXXXXawXpXXP5hz3FXX-296-360.jpg';
+        this.list.hide();
+        this.preview.show().html('<img src="'+img+'">');
+      },
+      back: function(order){
+        appRouter.navigate('home',{trigger:true})
+      },
+      home: function(order){
+        this.list.show();
+        this.preview.hide();
+      }
+    })
+
+    var Photos = new PhotoList;
+    var App = new AppView;
+
+    var appRouter = new Router();
+    Backbone.history.start()
+  })
+
+</script>
+
+<script type="text/template" id="photo-template">
+  <a href="#!preview/<%=order%>"><img src="<%=image%>" alt=""></a>
+</script>
+

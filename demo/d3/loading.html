@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hello D3</title>
+  <script src="d3.js"></script>
+  <script>
+    ;(function(win, doc){
+
+      var Loading = win.Loading = function(root, obj){
+        this.root = typeof root === 'string' ? d3.select('#'+root):d3.select(root);
+        this.obj = this._extend({
+          width: 100,
+          height: 100,
+          backColor: '#eee',
+          foreColor: '#fff',
+          strokeWidth: 3,
+          type: 'base',
+          angle: 0.2
+        },obj);
+      }
+
+      Loading.prototype.start = function(){
+        this.svg = this.root.append('svg').attr({
+          width: this.obj.width +'px',
+          height: this.obj.height +'px'
+        });
+        var initFun = this['init_'+ this.obj.type];
+        initFun && initFun.apply(this);
+      }
+
+      Loading.prototype.stop = function(){
+        this._stop = true;
+      }
+
+      Loading.prototype.init_base = function(){
+        var that = this;
+        var cx = (this.obj.width)/2;
+        var cy = (this.obj.height)/2;
+        var r = Math.floor(d3.min([cx,cy]));
+        var arc = d3.svg.arc()
+          .innerRadius(r-this.obj.strokeWidth)
+          .outerRadius(r)
+          .startAngle(0);
+        var inner = this.svg.append('path')
+          .attr({
+            d: arc.endAngle(2*Math.PI),
+            transform: 'translate('+cx+','+cy+')',
+            fill: this.obj.backColor
+          })
+        var outer = this.svg.append('path')
+          .attr({
+            d: arc.endAngle(this.obj.angle*2*Math.PI),
+            fill: this.obj.foreColor
+          })
+        var animate = function(){
+          outer
+            .transition()
+            .duration(500)
+            .attrTween('transform', function(){
+              return function(t){
+                var angle = Math.floor(t * 360);
+                return 'translate('+cx+','+cy+') rotate('+angle+')';
+              }
+            })
+            .each('end', function(){
+              if (!that._stop) {
+                animate();
+              };
+            })
+        }
+        animate();
+      }
+      Loading.prototype._extend = function(a, b){
+        var obj = {};
+        for(var n in a){
+          obj[n] = b[n] || a[n];
+        }
+        return obj;
+      }
+
+    })(window, document);
+  </script>
+  <style>
+    #contain {
+      overflow: hidden;
+    }
+    #contain div{
+      margin: 20px;
+      float: left;
+      min-width: 100px;
+      min-height: 100px;
+      background: #eee;
+    }
+  </style>
+</head>
+<body>
+
+<div id="contain">
+</div>
+<script>
+  var contain = d3.select('#contain');
+
+  // base
+  ;(function(){
+    var loading = new Loading(contain.append('div')[0][0],{
+      type: 'base',
+      width: 100,
+      height: 100,
+      backColor: '#ccc',
+      foreColor: '#fff',
+      angle: 0.2
+    });
+    loading.start();
+    // setTimeout(function(){
+    //   loading.stop();
+    // },5000);
+  })();
+
+  // base
+  // ;(function(){
+  //   var loading = new Loading(contain.append('div')[0][0],{
+  //     type: 'base',
+  //     width: 100,
+  //     fill: '#f00'
+  //   });
+  //   loading.start();
+  // })();
+
+
+</script>
+
+<script>
+</script>

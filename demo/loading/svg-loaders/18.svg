@@ -1,0 +1,8 @@
+<svg viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" xmlns="http://www.w3.org/2000/svg" fill="#fff">
+  <path d="M0 50A50 50 0 1 0 100 50" transform="rotate(30 50 50)">
+    <animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" from="30 50 50" to="30 50 50" values="30 50 50;0 50 50;30 50 50"></animateTransform>
+  </path>
+  <path d="M0 50A50 50 0 1 1 100 50" transform="rotate(-30 50 50)">
+    <animateTransform attributeName="transform" type="rotate" dur="1s" repeatCount="indefinite" from="-30 50 50" to="-30 50 50" values="-30 50 50;0 50 50;-30 50 50"></animateTransform>
+  </path>
+</svg>

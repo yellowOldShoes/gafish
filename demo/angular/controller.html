@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en" ng-app="app">
+<head>
+  <meta charset="UTF-8">
+  <title>Hello AngularJS</title>
+  <script src="angular1.2.29.js"></script>
+</head>
+<body>
+<div ng-controller="MyController">
+  <div>{{title}}</div>
+  <div>Your Name is: {{name}}</div>
+</div>
+<div ng-controller="parentController">
+  <div>{{title}}</div>
+  <div ng-controller="childController">
+    <div>{{title}}</div>
+    <div>{{name}}:{{age}}</div>
+  </div>
+</div>
+<script>
+  var app = angular.module('app', []);
+  app.run(function($rootScope){
+    $rootScope.title = "my info";
+  })
+  app.controller('MyController', function($scope){
+    $scope.name = 'gafish';
+  });
+  app.controller('parentController', function($scope){
+    $scope.name = "gafish";
+  });
+  app.controller('childController', function($scope){
+    $scope.age = 32;
+  })
+</script>
+</body>
+</html>

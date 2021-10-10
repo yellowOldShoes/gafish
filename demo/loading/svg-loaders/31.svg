@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" fill="#fff">
+  <circle cx="25" cy="50" r="25" >
+    <animate attributeName="cx" values="25;75;25" keyTimes="0;0.5;1" dur="1s" repeatCount="indefinite"></animate>
+  </circle>
+  <circle cx="75" cy="50" r="25" >
+    <animate attributeName="cx" values="75;25;75" keyTimes="0;0.5;1" dur="1s" repeatCount="indefinite"></animate>
+  </circle>
+  <circle cx="25" cy="50" r="25" >
+    <animate attributeName="cx" values="25;75;25" keyTimes="0;0.5;1" dur="1s" repeatCount="indefinite"></animate>
+    <animate attributeName="opacity" values="1;1;0;0" keyTimes="0;0.499;0.5;1" dur="1s" repeatCount="indefinite"></animate>
+  </circle>
+</svg>

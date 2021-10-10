@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Demo</title>
+  <script src="react.js"></script>
+  <script src="react-dom.js"></script>
+  <script src="browser.min.js"></script>
+  <style>
+  #container {   padding: 50px;   background-color: #EEE; }
+  #container h1 {   font-size: 48px;   font-family: sans-serif;   color: #0080a8; }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+  <script type="text/babel">
+    var Module = React.createClass({
+      getInitialState: function(){
+        return {
+          options: [2,3]
+        };
+      },
+      handleChange: function(ev){
+        var sel = ev.target;
+        var checked = [];
+        Array.prototype.forEach.call(sel, function(s, i){
+          if (s.selected) {
+            checked.push(s.value);
+          }
+        });
+        this.setState({
+          options: checked
+        });
+        console.log(checked)
+      },
+      render: function(){
+        return (
+          <div>
+            <select multiple="true" value={this.state.options} onChange={this.handleChange}>
+              <option value="1">AAAAA</option>
+              <option value="2">BBBBB</option>
+              <option value="3">CCCCC</option>
+            </select>
+          </div>
+        );
+      }
+    });
+    ReactDOM.render(<Module />, container);
+  </script>
+
+</body>
+</html>

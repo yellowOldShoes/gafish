@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hello D3</title>
+  <script src="d3.js"></script>
+  <style>
+  </style>
+</head>
+<body>
+  <script>
+    var dataset = {
+      "name": "中国",
+      "children":
+          [
+            {
+              "name": "浙江",
+              "children":
+                  [
+                    {"name":"嘉兴", "gdp":3147},
+                    {"name":"金华", "gdp":2958},
+                    {"name":"衢州", "gdp":1056}
+                  ]
+            },
+            {
+              "name": "广东",
+              "children":
+                  [
+                    {"name":"杭州", "gdp":8343},
+                    {"name":"绍兴", "gdp":3620},
+                    {"name":"湖州", "gdp":1803}
+                  ]
+            },
+            {
+              "name": "福建",
+              "children":
+                  [
+                    {"name":"舟山", "gdp":1021},
+                    {"name":"台州", "gdp":3153},
+                    {"name":"丽水", "gdp":983}
+                  ]
+            }
+          ]
+    }
+
+    var width = 500;
+    var height = 500;
+    var radius =  Math.min(width, height) / 2
+
+    var partition = d3.layout.partition()
+                .sort(null) //设定内部的顶点的排序函数，null 表示不排序
+                 .size([2 * Math.PI, radius * radius]) //第一个值为 2 * PI ，第二个值为圆半径的平方，暂时不去深究为什么这么做，只需记得这么用即可
+                .value(function(d) { return d.gdp; }); //设定表示分区大小的值
+
+    var nodes = partition.nodes(dataset);
+    var links = partition.links(nodes);
+    console.log(nodes)
+
+    var color = d3.scale.category20();
+
+    var svg = d3.select('body').append('svg')
+      .attr('class','axis')
+      .attr('width',width)
+      .attr('height',height)
+      .append('g')
+      .attr("transform", "translate(" + radius + "," + radius + ")");
+
+    var arc = d3.svg.arc()
+            .startAngle(function(d) { return d.x; })
+            .endAngle(function(d) { return d.x + d.dx; })
+            .innerRadius(function(d) { return Math.sqrt(d.y); })
+            .outerRadius(function(d) { return Math.sqrt(d.y + d.dy); });
+
+    var arcs = svg.selectAll("g")
+                  .data(nodes)
+                  .enter().append("g");
+
+    arcs.append("path")
+        .attr("d", arc)
+        .style("stroke", "#fff")
+        .style("fill", function(d) { return color(d.name); })
+
+    arcs.append("text")
+        .attr("text-anchor","middle")
+        .attr("transform",function(d,i){
+                //第一个元素不动
+                if( i == 0 ) return ;
+
+                //其它的平移
+                return  "translate(" + arc.centroid(d) + ")"
+        })
+        .text(function(d) { return d.name; });
+
+  </script>
+</body>
+</html>

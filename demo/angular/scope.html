@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hello AngularJS</title>
+  <script src="angular1.2.29.js"></script>
+</head>
+<body>
+
+<!--<div ng-app="myApp1">Hello {{name}}</div>-->
+<div ng-app="myApp2">
+  <div ng-controller="MyController">
+    <div>nick== {{nick}}</div>
+    <div>lowercase== {{name | lowercase}}</div>
+    <div>uppercase== {{name | uppercase}}</div>
+    <div>currency== {{price | currency }}</div>
+    <div>number== {{price | number:3 }}</div>
+    <div>date=={{today}}</div>
+    <div>date== {{today | date }}</div>
+    <div>date:'medium'== {{today | date:'medium' }}</div>
+    <div>date:'short'== {{today | date:'short' }}</div>
+    <div>date:'fullDate'== {{today | date:'fullDate' }}</div>
+    <div>date:'longDate'== {{today | date:'longDate' }}</div>
+    <div>date:'mediumDate'== {{today | date:'mediumDate' }}</div>
+    <div>date:'shortDate'== {{today | date:'shortDate' }}</div>
+    <div>date:'mediumDate'== {{today | date:'mediumTime' }}</div>
+    <div>date:'shortTime'== {{today | date:'shortTime' }}</div>
+    <div>date:'y'== {{today | date:'y' }}</div>
+    <div>date:'yy'== {{today | date:'yy' }}</div>
+    <div>date:'yyyy'== {{today | date:'yyyy' }}</div>
+    <div>date:'M'== {{today | date:'M' }}</div>
+    <div>date:'MM'== {{today | date:'MM' }}</div>
+    <div>date:'MMM'== {{today | date:'MMM' }}</div>
+    <div>date:'MMMM'== {{today | date:'MMMM' }}</div>
+    <div>date:'d'== {{today | date:'d' }}</div>
+    <div>date:'dd'== {{today | date:'dd' }}</div>
+    <div>date:'EEE'== {{today | date:'EEE' }}</div>
+    <div>date:'EEEE'== {{today | date:'EEEE' }}</div>
+    <div>date:'h'== {{today | date:'h' }}</div>
+    <div>date:'hh'== {{today | date:'hh' }}</div>
+    <div>date:'H'== {{today | date:'H' }}</div>
+    <div>date:'HH'== {{today | date:'HH' }}</div>
+    <div>date:'m'== {{today | date:'m' }}</div>
+    <div>date:'mm'== {{today | date:'mm' }}</div>
+    <div>date:'s'== {{today | date:'s' }}</div>
+    <div>date:'ss'== {{today | date:'ss' }}</div>
+    <div>date:'sss'== {{today | date:'sss' }}</div>
+    <div>date:'a'== {{today | date:'a' }}</div>
+    <div>date:'Z'== {{today | date:'Z' }}</div>
+    <div>filter:'a'== {{filter | filter:'a' }}</div>
+    <div>json== {{json | json }}</div>
+    <div>limitTo== {{limitto | limitTo:3 }}</div>
+    <div>orderBy== {{orderby | orderBy:'name':true }}</div>
+    <div>capitalize== {{capitalize | capitalize}}</div>
+  </div>
+</div>
+
+<script>
+//  angular.module('myApp1',[]).run(function($rootScope){
+//    $rootScope.name = 'world';
+//  });
+  angular.module('myApp2',[])
+      .controller('MyController',function($scope, $filter){
+        $scope.name = 'haHA';
+        $scope.nick = $filter('uppercase')('gafish');
+        $scope.price = 1244332.479333;
+        $scope.today = new Date();
+        $scope.filter = ['a','ab','bc','de','zz'];
+        $scope.json = {"a":123,"b":456};
+        $scope.limitto = 'abcdefg';
+        $scope.orderby = [{name:'a'},{name:'g'},{name:'b'}];
+        $scope.capitalize = 'abcdefg';
+      })
+      .filter('capitalize',function(){
+        return function(input){
+          if(input){
+            return input[0].toUpperCase() + input.slice(1);
+          }
+        }
+      })
+</script>
+</body>
+</html>

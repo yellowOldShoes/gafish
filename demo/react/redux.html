@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Demo</title>
+<script src="browser.min.js"></script>
+<script src="redux.js"></script>
+</head>
+<body>
+
+<div id="container"></div>
+<script type="text/babel">
+    (function(){
+        var userReducer = function(state = [], action){
+            if (action.type == 'addUser'){
+                var newState = state.concat([action.user]);
+                return newState;
+            }
+            return state;
+        }
+
+        var store = Redux.createStore(userReducer);
+
+        store.dispatch({
+            type: 'addUser',
+            user: {
+                name: 'gafish'
+            }
+        });
+
+        store.dispatch({
+            type: 'addUser',
+            user: {
+                name: 'xxoo'
+            }
+        });
+        // console.log(store.getState())
+    })();
+</script>
+
+<script type="text/babel">
+    (function(){
+        const {
+            createStore,
+            combineReducers
+        } = Redux;
+        const userReducer = function(state = {}, action){
+            if (action.type == 'addUser'){
+                const newState = Object.assign({}, state, action.user);
+                return newState;
+            }
+            return state;
+        }
+        const widgetReducer = function(state = {}, action){
+            return state;
+        }
+        const reducers = combineReducers({
+            userState: userReducer,
+            widgetState: widgetReducer
+        });
+        const store = createStore(reducers, {userState: {name: 'abc'}});
+        store.dispatch({
+            type: 'addUser',
+            user: {
+                name: 'gafish'
+            }
+        });
+        console.log(store.getState());
+    })();
+</script>
+
+</body>
+</html>

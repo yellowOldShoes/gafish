@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Demo</title>
+<script src="react.js"></script>
+<script src="react-dom.js"></script>
+<script src="browser.min.js"></script>
+<!-- <script src="axios.js"></script> -->
+<script src="redux.js"></script>
+<script src="react-redux.js"></script>
+</head>
+<body>
+
+<div id="container"></div>
+<script type="text/babel">
+    const Container = React.createClass({
+        render: function(){
+            return (
+                <div>
+                    {this.props.name}
+                </div>
+            )
+        }
+    });
+    const reducer = function(state = {name:'gafish'}, action){
+        if (action.type == 'changeName'){
+            return {name: action.name};
+        }
+        return state;
+    };
+    const {createStore} = Redux;
+    const {Provider, connect} = ReactRedux;
+    const store = createStore(reducer);
+    const ContainerDOM = connect(function(store){
+        return {
+            name: store.name
+        }
+    })(Container);
+    ReactDOM.render(<Provider store={store}><ContainerDOM /></Provider>, document.querySelector('#container'));
+    setTimeout(function(){
+        store.dispatch({
+            type: 'changeName',
+            name: 'abc'
+        });
+    }, 2000);
+</script>
+
+</body>
+</html>

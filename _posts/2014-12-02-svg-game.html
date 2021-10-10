@@ -1,0 +1,263 @@
+---
+layout: default
+title:  SVG演示-游戏：英雄难过棍子关
+---
+
+<style>
+    html,body{
+        padding: 0;
+        margin: 0;
+    }
+    #game{
+        text-align: center;
+    }
+</style>
+
+<svg width=500 height=500>
+    <image href="../images/hero.png" x=0 y=0></image>
+</svg>
+
+<div id="game"></div>
+
+<script>
+
+    (function(win,doc){
+
+        var SVGNS = '//www.w3.org/2000/svg';
+        var XINKNS = '//www.w3.org/1999/xlink';
+
+        var util = {
+            createTag: function(tagName){
+                return doc.createElementNS(SVGNS,tagName);
+            },
+            createSVG: function(){
+                var svg = util.createTag('svg');
+                svg.setAttribute('width','500');
+                svg.setAttribute('height','500');
+                svg.setAttribute('viewBox','0 0 500 500');
+                svg.setAttribute('preserveAspectRatio','xMidYMid meet');
+                return svg;
+            },
+            createG: function(){
+                var g = util.createTag('g');
+                return g;
+            },
+            createPath: function(d,translate,color){
+                var path = util.createTag('path');
+                path.setAttribute('d',d);
+                path.setAttribute('transform','translate('+translate+')');
+                path.setAttribute('fill',color||'black');
+                return path;
+            },
+            createRect: function(x,y,w,h,color){
+                var rect = util.createTag('rect');
+                rect.setAttribute('x',x);
+                rect.setAttribute('y',y);
+                rect.setAttribute('width',w);
+                rect.setAttribute('height',h);
+                rect.setAttribute('fill',color||'#000');
+                return rect;
+            },
+            createText: function(x,y,t){
+                var text = util.createTag('text');
+                text.setAttribute('x',x);
+                text.setAttribute('y',y);
+                text.textContent = t;
+                return text;
+            },
+            extend: function(tObj,sObj){
+                for(var i in sObj){
+                    tObj[i] = sObj[i];
+                }
+                return tObj;
+            },
+            rotateAnimate: function(target,from,to,x,y,cb){
+                var deg = from;
+                var animateTime = setInterval(function(){
+                    deg = Math.floor(deg - (from - to)*.05);
+                    deg = Math[from <= to ? 'min':'max'](deg,to);
+
+                    target.setAttribute('transform','rotate('+ deg +' '+ x +' '+ y +')');
+
+                    if (from >= to && deg <= to || from < to && deg >= to) {
+                        clearInterval(animateTime);
+                        cb && cb();
+                    }
+                },10);
+            },
+            translateAnimate: function(target,opt,cb){
+                opt = util.extend({
+                    x: [0,0],
+                    y: [0,0]
+                },opt);
+                var x = opt.x[0];
+                var y = opt.y[0];
+                var xEnd;
+                var yEnd;
+                var animateTime = setInterval(function(){
+                        x = Math.floor(x - (opt.x[0]-opt.x[1])*.05);
+                        x = Math[opt.x[0] <= opt.x[1] ? 'min':'max'](x,opt.x[1]);
+
+                        if (opt.x[0] >= opt.x[1] &&  x <= opt.x[1] || opt.x[0] < opt.x[1] &&  x >= opt.x[1]) {
+                            xEnd = true;
+                        }
+                        y = Math.floor(y - (opt.y[0]-opt.y[1])*.05);
+                        y = Math[opt.y[0] <= opt.y[1] ? 'min':'max'](y,opt.y[1]);
+
+                        if (opt.y[0] >= opt.y[1] &&  y <= opt.y[1] || opt.y[0] < opt.y[1] &&  y >= opt.y[1]) {
+                            yEnd = true;
+                        }
+
+                    target.setAttribute('transform','translate('+ x +','+ y +')');
+
+                    if (xEnd && yEnd) {
+                        clearInterval(animateTime);
+                        cb && cb();
+                    }
+                },10);
+            }
+        };
+
+        win.StickHero = function(container,opts) {
+
+            container = typeof container == 'string' ? doc.querySelector(container) : container;
+            opts = util.extend({},opts);
+
+            var svg = util.createSVG();
+            container.appendChild(svg);
+
+            var group;
+            var pillarA;
+            var pillarB;
+            var hero;
+            var stick;
+            var state;
+            var count;
+
+            var maxWidth;
+            var minWidth;
+            var stickWidth;
+            var score;
+
+            init();
+
+            function init(){
+                group =  util.createG();
+
+                pillarA = util.createRect(0,400,50,100);
+                hero = util.createRect(30,380,20,20,'#f40');
+                stick = util.createRect(50,400,0,1,'#f00');
+                state = util.createRect(0,0,'100%','100%','#eee');
+                showScore = util.createText(0,20,'按方向箭向上箭头开始游戏');
+
+                group.appendChild(pillarA);
+                group.appendChild(hero);
+                group.appendChild(stick);
+
+                svg.innerHTML = '';
+                svg.appendChild(state);
+                svg.appendChild(group);
+                svg.appendChild(showScore);
+
+                stickWidth = 0;
+                score = 0;
+
+                initStick();
+                initPillarB();
+                bind();
+            };
+            function initStick(){
+                var x = pillarA.getBBox().width;
+                stick.setAttribute('x',x);
+                stick.setAttribute('transform','rotate(-90 '+ x +' 400)');
+                stick.setAttribute('width','0');
+            };
+            function initPillarB(){
+                var x = 100 + Math.random()*200;
+                var w = 20 + Math.random()*100;
+                pillarB = util.createRect(x,400,w,100);
+                pillarB.setAttribute('transform','translate(400 0)');
+                group.appendChild(pillarB);
+                util.translateAnimate(pillarB,{
+                    x: [400,0]
+                });
+            };
+            function bind(){
+                doc.addEventListener('keydown',down,false);
+                doc.addEventListener('keyup',up,false);
+            };
+            function down(e){
+                if(e.keyCode != '38') return;
+
+                stickWidth = stickWidth + 10;
+                stick.setAttribute('width',stickWidth);
+            };
+            function up(e){
+                if(e.keyCode != '38') return;
+
+                util.rotateAnimate(stick,-90,0,pillarA.getBBox().width,400,function(){
+                    move();
+                });
+            };
+            function move(){
+                // console.log(pillarB.getBBox());
+                var x;
+                var isEnd;
+                minWidth = pillarB.getBBox().x - pillarA.getBBox().x - pillarA.getBBox().width;
+                maxWidth = pillarB.getBBox().width + minWidth;
+
+                if (stickWidth >= minWidth && stickWidth <= maxWidth) {
+                    x = maxWidth;
+                }else{
+                    x = hero.getBBox().width + stickWidth;
+                    isEnd = true;
+                }
+                util.translateAnimate(hero,{x: [0,x]},function(){
+                    stickWidth = 0;
+                    if(isEnd){
+                        end(x);
+                    }else{
+                        next();
+                    }
+                    count();
+                });
+            };
+            function end(x){
+                util.translateAnimate(hero,{
+                    x: [x,x],
+                    y: [0,200]
+                },function(){
+                    alert('Game OVer!');
+                    init();
+                    count();
+                });
+            };
+            function next(){
+                var x = pillarB.getBBox().x;
+                util.translateAnimate(group,{x: [0,-x]},function(){
+                    group.removeChild(pillarA);
+                    pillarA = pillarB;
+                    pillarA.setAttribute('x','0');
+                    pillarA.removeAttribute('transform');
+
+                    hero.setAttribute('x',pillarA.getBBox().width-20);
+                    hero.removeAttribute('transform');
+
+                    group.removeAttribute('transform');
+
+                    initPillarB();
+                    initStick();
+                });
+                score++;
+            };
+            function count(){
+                showScore.textContent = '当前得分：'+score;
+            };
+
+        }
+
+    })(window,document);
+
+    StickHero('#game',{});
+
+</script>

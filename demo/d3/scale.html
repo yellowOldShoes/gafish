@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hello D3</title>
+  <script src="d3.js"></script>
+  <style>
+    svg{
+      font-size: 12px;
+    }
+    .domain{
+      fill: none;
+      stroke: #000;
+    }
+    .tick line{
+      stroke: #000;
+    }
+    svg > g{
+      transform: translate(50px,50px);
+    }
+  </style>
+</head>
+<body>
+
+<h2>d3.scale.linear().domain([0,100]).range([0,700]);</h2>
+<div id="demo1"></div>
+<script >
+  var demo = d3.select('#demo1');
+  var svg = demo.append('svg').attr('width',800).attr('height',100);
+  var linear = d3.scale.linear().domain([0,100]).range([0,700]);
+      svg.append('g').call(d3.svg.axis().ticks(5).scale(linear));
+</script>
+
+<h2>d3.scale.identity().domain([0,100]);</h2>
+<div id="demo2"></div>
+<script >
+  var demo = d3.select('#demo2');
+  var svg = demo.append('svg').attr('width',800).attr('height',100);
+  var identity = d3.scale.identity().domain([0,100]);
+  svg.append('g').call(d3.svg.axis().ticks(5).scale(identity));
+</script>
+
+<h2>d3.scale.quantize().domain([0,10]).range([0,10,20,30,40,50,60,70]);</h2>
+<div id="demo5"></div>
+<script >
+  var demo = document.getElementById('demo5');
+  var quantize = d3.scale.quantize().domain([0,10]).range([0,10,20,30,40,50,60,70]);
+  var div = document.createElement('div');
+  div.innerHTML = ''+
+    'quantize(0) ==> '+quantize(0)+'<br>'+
+    'quantize(1) ==> '+quantize(1)+'<br>'+
+    'quantize(2) ==> '+quantize(2)+'<br>'+
+    'quantize(3) ==> '+quantize(3)+'<br>'+
+    'quantize(4) ==> '+quantize(4)+'<br>'+
+    'quantize(5) ==> '+quantize(5)+'<br>'+
+    'quantize(6) ==> '+quantize(6)+'<br>'+
+    'quantize(7) ==> '+quantize(7)+'<br>'+
+    'quantize(8) ==> '+quantize(8)+'<br>'+
+    'quantize(9) ==> '+quantize(9)+'<br>'+
+    'quantize(10) ==> '+quantize(10)
+  demo.appendChild(div);
+</script>
+
+<h2>d3.scale.quantile().domain([0,10,20,30,40,50,60,70]).range([0,100,200,300,400,500,700]);</h2>
+<div id="demo4"></div>
+<script >
+  var demo = d3.select('#demo4');
+  var svg = demo.append('svg').attr('width',800).attr('height',100);
+  var quantile = d3.scale.quantile().domain([0,10,20,30,40,50,60,70]).range([0,100,200,300,400,500,700]);
+  svg.append('g').call(d3.svg.axis().ticks(5).scale(quantile));
+  console.log(quantile(0))
+  console.log(quantile(5))
+  console.log(quantile(20))
+  console.log(quantile(35))
+</script>
+
+<h2>d3.scale.log().base(2).domain([1,100]).range([0,700]).nice();</h2>
+<div id="demo3"></div>
+<script >
+  var demo = d3.select('#demo3');
+  var svg = demo.append('svg').attr('width',800).attr('height',100);
+  var log = d3.scale.log().base(2).domain([1,100]).range([0,700]).nice();
+  svg.append('g').call(d3.svg.axis().ticks(5,"").scale(log));
+</script>
+
+<h2>d3.scale.pow().domain([0,100]).range([0,700]).exponent(2);</h2>
+<div id="demo8"></div>
+<script >
+  var demo = d3.select('#demo8');
+  var svg = demo.append('svg').attr('width',800).attr('height',100);
+  var pow = d3.scale.pow().domain([0,100]).range([0,700]).exponent(2);
+  svg.append('g').call(d3.svg.axis().ticks(5).scale(pow));
+
+</script>
+
+<h2>d3.scale.sqrt().domain([0,100]).range([0,700]);</h2>
+<div id="demo6"></div>
+<script >
+  var demo = d3.select('#demo6');
+  var svg = demo.append('svg').attr('width',800).attr('height',100);
+  var sqrt = d3.scale.sqrt().domain([0,100]).range([0,700]);
+  svg.append('g').call(d3.svg.axis().ticks(5).scale(sqrt));
+</script>
+
+<h2>d3.scale.threshold().domain([0,1,2,3,4,5,6,7]).range([0,0,100,200,300,400,500,600,700]);</h2>
+<div id="demo7"></div>
+<script >
+  var demo = d3.select('#demo7');
+  var svg = demo.append('svg').attr('width',800).attr('height',100);
+  var threshold = d3.scale.threshold().domain([0,1,2,3,4,5,6,7]).range([0,0,100,200,300,400,500,600,700]);
+  svg.append('g').call(d3.svg.axis().ticks(5).scale(threshold));
+</script>
+
+<h2>d3.scale.ordinal().domain(["A", "B", "C", "D", "E", "F", "G", "H"]).range([0,100,200,300,400,500,600,700]);</h2>
+<div id="demo9"></div>
+<script >
+  var demo = d3.select('#demo9');
+  var svg = demo.append('svg').attr('width',800).attr('height',100);
+  var ordinal = d3.scale.ordinal().domain(["A", "B", "C", "D", "E", "F", "G", "H"]).range([0,100,200,300,400,500,600,700]);
+  svg.append('g').call(d3.svg.axis().ticks(5).scale(ordinal));
+</script>
+
+<h2>d3.scale.category10()</h2>
+<div id="demo10"></div>
+<script >
+  var demo = d3.select('#demo10');
+  var category10 = d3.scale.category10();
+  for(var i =0; i < 10; i++){
+    demo.append('span')
+        .text(category10(i)+' ')
+        .style('color',category10(i))
+  }
+</script>
+
+<h2>d3.scale.category20()</h2>
+<div id="demo11"></div>
+<script >
+  var demo = d3.select('#demo11');
+  var category20 = d3.scale.category20();
+  for(var i =0; i < 20; i++){
+    demo.append('span')
+        .text(category20(i)+' ')
+        .style('color',category20(i))
+  }
+</script>
+
+<h2>d3.scale.category20b()</h2>
+<div id="demo12"></div>
+<script >
+  var demo = d3.select('#demo12');
+  var category20b = d3.scale.category20b();
+  for(var i =0; i < 20; i++){
+    demo.append('span')
+        .text(category20b(i)+' ')
+        .style('color',category20b(i))
+  }
+</script>
+
+<h2>d3.scale.category20c()</h2>
+<div id="demo13"></div>
+<script >
+  var demo = d3.select('#demo13');
+  var category20c = d3.scale.category20c();
+  for(var i =0; i < 20; i++){
+    demo.append('span')
+        .text(category20c(i)+' ')
+        .style('color',category20c(i))
+  }
+</script>
+
+<h2>d3.time.scale().domain([new Date('2015-1-1'), new Date('2016-12-1')]).range([0,700]).nice();</h2>
+<div id="demo14"></div>
+<script >
+  var demo = d3.select('#demo14');
+  var svg = demo.append('svg').attr('width',800).attr('height',100);
+  var time = d3.time.scale().domain([new Date('2015-1-1'), new Date('2016-12-1')]).range([0,700]).nice();
+  svg.append('g').call(d3.svg.axis().scale(time).tickFormat(d3.time.format("%Y-%m-%d")));
+</script>
+</body>
+</html>

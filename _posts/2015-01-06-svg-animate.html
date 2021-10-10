@@ -1,0 +1,163 @@
+---
+layout: default
+title:  SVG演示-动画
+---
+
+<style>
+    html,
+    body{
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+    }
+    button{
+        display: block;
+        padding: 5px;
+        margin: 5px;
+        cursor: pointer;
+    }
+    #demo{
+        position: fixed;
+        top: 50px;
+        right: 50px;
+        z-index: 9999;
+        text-align: center;
+        line-height: 100px;
+        width: 100px;
+        height: 100px;
+        border: 1px solid #f00;
+        color: #f00;
+        font-size: 12px;
+        background: #fff;
+    }
+    button{
+        text-align: left;
+    }
+</style>
+<dl>
+    <dt>参考资料</dt>
+    <dd>
+        <a href="//www.w3.org/TR/SVG/animate.html#AnimateElement/">//www.w3.org/TR/SVG/animate.html#AnimateElement/</a>
+    </dd>
+    <dd>
+        <a href="//www.zhangxinxu.com/wordpress/2014/08/so-powerful-svg-smil-animation/">//www.zhangxinxu.com/wordpress/2014/08/so-powerful-svg-smil-animation/</a>
+    </dd>
+    <dd>
+        <a href="//www.w3cschool.cc/svg/svg-reference.html">//www.w3cschool.cc/svg/svg-reference.html</a>
+    </dd>
+    <dd>
+        <a href="https://developer.mozilla.org/en-US/docs/Web/SVG/Element/animateMotion">https://developer.mozilla.org/en-US/docs/Web/SVG/Element/animateMotion</a>
+    </dd>
+</dl>
+<div id="demo">预览区域</div>
+<h1>animate</h1>
+<div data-type="animate">
+    <button>attributeType="XML" attributeName="r" from=0 dur="1s" to=50</button>
+    <button>attributeType="XML" attributeName="r" from=0 dur="1s" to=50 begin="1000ms" </button>
+    <button>attributeType="XML" attributeName="r" from=0 dur="1s" to=50 begin="1s" </button>
+    <button>attributeType="XML" attributeName="r" from=0 dur="1s" to=50 begin=".01min"</button>
+    <button>attributeType="XML" attributeName="r" from=0 dur="1s" to=50 begin=".0002h"</button>
+    <button>attributeType="XML" attributeName="r" from=0 dur="1s" to=50 begin="00:00:01"</button>
+    <button>attributeType="XML" attributeName="r" from=0 dur="1s" to=50 begin="1s;2s;5s" </button>
+    <button>attributeType="XML" attributeName="r" from=0 dur="1s" to=50 begin="-1"</button>
+    <button>attributeType="XML" attributeName="r" from=0 dur="1s" to=50 begin="Endefinite"</button>
+    <button>attributeType="XML" attributeName="r" from=0 dur="1s" to=50 begin="mouseover" </button>
+    <button>attributeType="XML" attributeName="r" from=0 dur="1s" to=50 end=".5s" </button>
+    <button>attributeType="XML" attributeName="r" from=0 dur="1s" to=50 restart="always" </button>
+    <button>attributeType="XML" attributeName="r" from=0 dur="1s" to=50 restart="whenNotactive" </button>
+    <button>attributeType="XML" attributeName="r" from=0 dur="1s" to=50 restart="never" </button>
+    <button>attributeType="XML" attributeName="r" from=0 dur="1s" to=50 repeatCount="2" </button>
+    <button>attributeType="XML" attributeName="r" from=0 dur="1s" to=50 repeatCount="indefinite" </button>
+    <button>attributeType="XML" attributeName="r" from=0 dur="1s" to=50 repeatDur="2.5" </button>
+    <button>attributeType="XML" attributeName="r" from=0 dur="1s" to=50 repeatDur="2.5" fill="freeze"</button>
+    <button>attributeType="XML" attributeName="r" from=0 dur="1s" to=50 repeatDur="2.5" fill="remove"</button>
+    <button>attributeType="XML" attributeName="r" from=0 dur="1s" to="50" additive="replace"</button>
+    <button>attributeType="XML" attributeName="r" from=0 dur="1s" to="10" additive="sum"</button>
+    <button>attributeType="XML" attributeName="r" from=0 dur="1s" to="50" calcMode="discrete"</button>
+    <button>attributeType="XML" attributeName="r" from=0 dur="1s" to="50" calcMode="linear"</button>
+    <button>attributeType="XML" attributeName="r" from=0 dur="1s" to="50" calcMode="paced" values="0; 5; 50" </button>
+    <button>attributeType="XML" attributeName="r" from=0 dur="1s" to="50" calcMode="spline" keyTimes="0; .8; 1" keySplines=".5 0 .5 1; 0 0 1 1"</button>
+    <button>attributeType="XML" attributeName="r" from=0 dur="1s" by="20" </button>
+    <button>attributeType="XML" attributeName="r" from=0 dur="1s" values="10;20;50;10" </button>
+    <button>attributeType="CSS" attributeName="opacity" from=".8" to=".1" dur="1s" </button>
+</div>
+<h1>set</h1>
+<div data-type="set">
+    <button>attributeType="XML" attributeName="r" dur="1s" to=30 begin="1s" </button>
+</div>
+<h1>animateTransform</h1>
+<div data-type="animateTransform">
+    <button>attributeType="XML" attributeName="transform" type="translate" dur="1s" to="10 30" begin="1s" </button>
+    <button>attributeType="XML" attributeName="transform" type="scale" dur="1s" to=".5" begin="1s" </button>
+    <button>attributeType="XML" attributeName="transform" type="rotate" dur="1s" to="45" begin="1s" </button>
+    <button>attributeType="XML" attributeName="transform" type="skewX" dur="1s" to="50" begin="1s" </button>
+    <button>attributeType="XML" attributeName="transform" type="skewY" dur="1s" to="50" begin="1s" </button>
+</div>
+<h1>animateMotion</h1>
+<div data-type="animateMotion">
+    <button>path="M 0 0,l 20 20,l 20 0" dur="1s" </button>
+    <button>path="M 0 0,l 20 20,l 20 0" dur="1s" rotate="auto"</button>
+</div>
+<h1>更多</h1>
+<div>
+    <button class="more">
+        attributeType="XML" attributeName="r" values="50;20;0" dur="1s" id="a"
+        <br>
+        attributeType="XML" attributeName="fill" to="#f00" dur="1s" repeatCount="indefinite" begin="a.end+1s"
+    </button>
+    <button class="more">
+        attributeType="XML" attributeName="r" values="50;10;0;10;50" dur="1s" id="a" repeatCount="indefinite"
+        <br>
+        attributeType="XML" attributeName="fill" values="#f00;#000;#f0f;#f00" dur="1s" repeatCount="indefinite" begin="a.begin+2s"
+    </button>
+    <button class="more">
+        attributeType="XML" attributeName="r" values="50;10;0;10;50" dur="1s" id="a" repeatCount="indefinite"
+        <br>
+        attributeType="XML" attributeName="fill" values="#f00;#000;#f0f;#f00" dur="1s" repeatCount="indefinite" begin="a.repeat(2)"
+    </button>
+    <button class="more">
+        attributeType="XML" attributeName="r" values="50;10;0;10;50" dur="1s" id="a"
+        <br>
+        attributeType="XML" attributeName="fill" values="#f00;#000;#f0f;#f00" dur="1s" repeatCount="indefinite" begin="circle.mouseover" end="circle.mouseout"
+    </button>
+    <button class="more">
+        attributeType="XML" attributeName="r" values="50;10;0;10;50" dur="1s" id="a"
+        <br>
+        attributeType="XML" attributeName="fill" values="#f00;#000;#f0f;#f00" dur="1s" repeatCount="indefinite" begin="accessKey(a)"
+    </button>
+    <div>(firefox only)</div>
+</div>
+<script>
+    document.body.addEventListener('click',function(ev){
+        var evt = ev.target;
+        var msg = '';
+        if (evt.tagName.toLowerCase() == 'button') {
+            if(evt.className.indexOf('more') >= 0){
+                var text = evt.innerHTML.split('<br>');
+                svg = '<svg width=100 height=100>'
+                    +'<circle cx=50 cy=50 r=50 id="circle">'
+                    +'<animate '+text[0]+'></animate>'
+                    +'<animate '+text[1]+'></animate>'
+                    +'</circle>'
+                    +'</svg>';
+            }else{
+                var type = evt.parentNode.getAttribute('data-type');
+                svg = '<svg width=100 height=100>'
+                    +'<circle cx=50 cy=50 r=50>'
+                    +'<'+type+' '+evt.textContent+'></'+type+'>'
+                    +'</circle>'
+                    +'</svg>';
+            }
+            document.getElementById('demo').innerHTML = '重新加载...';
+            setTimeout(function(){
+                document.getElementById('demo').innerHTML = svg;
+            },300);
+        }
+    })
+    document.getElementById('demo').addEventListener('click',function(ev){
+        if (ev.target.tagName.toLowerCase() == 'circle') {
+            ev.target.getElementsByTagName('animate')[0].beginElement();
+        };
+    })
+</script>

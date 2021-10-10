@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Demo</title>
+  <script src="react.js"></script>
+  <script src="react-dom.js"></script>
+  <script src="browser.min.js"></script>
+</head>
+<body>
+
+  <div id="container"></div>
+  <script type="text/babel">
+    var container = document.querySelector('#container');
+    var HelloWorld = React.createClass({
+      render: function(){
+        return (
+          <p>Hello,{this.props.name}! {this.props.children}</p>
+        )
+      }
+    });
+    ReactDOM.render(
+      <div>
+        <HelloWorld name="gafish"/>
+        <HelloWorld name="yoyo">let us play</HelloWorld>
+        <HelloWorld name="benben">
+          <i>let us sing</i>
+        </HelloWorld>
+      </div>
+      ,container
+    );
+  </script>
+
+</body>
+</html>

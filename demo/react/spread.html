@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Demo</title>
+  <script src="react.js"></script>
+  <script src="react-dom.js"></script>
+  <script src="browser.min.js"></script>
+</head>
+<body>
+
+  <div id="container"></div>
+  <script type="text/babel">
+    var container = document.querySelector('#container');
+    var Display = React.createClass({
+      render: function(){
+        return (
+          <p>{this.props.name}</p>
+          <p>{this.props.age}</p>
+          <p>{this.props.sex}</p>
+        )
+      }
+    });
+    var Label = React.createClass({
+      render: function(){
+        return (
+          <Display {...this.props}/>
+        )
+      }
+    });
+    var Shirt = React.createClass({
+      render: function(){
+        return (
+          <Label {...this.props}/>
+        )
+      }
+    });
+    ReactDOM.render(
+      <div>
+        <Shirt />
+      </div>
+      ,container
+    );
+  </script>
+
+</body>
+</html>

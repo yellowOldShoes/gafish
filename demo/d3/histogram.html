@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hello D3</title>
+  <script src="d3.js"></script>
+  <style>
+  </style>
+</head>
+<body>
+  <script>
+    var dataset = [
+        0,1,2,3,
+        10,11,12,13,14,15,16,17,18,19,
+        20,21,
+        30,32,37,
+        40,45,46,49,
+        50,52,55,
+        60,69,
+        70,77,
+        80,81,
+        90,91,99,
+        100
+    ];
+
+    var partition = d3.layout.histogram()
+        .range([0,100])
+        .bins(10)
+        .frequency(true)
+
+    var data = partition(dataset);
+    console.log(data)
+
+    var width = 500;
+    var height = 200;
+
+    var svg = d3.select('body').append('svg')
+      .attr('width',width)
+      .attr('height',height)
+
+    var x = d3.scale.linear().domain([0,100]).range([0,width])
+    var y = d3.scale.linear().domain([0,10]).range([0,height])
+
+    var bar = svg.selectAll('g').data(data)
+        .enter()
+        .append('g')
+        .attr('transform',function(d,i){
+            return 'translate('+ x(d.x) +','+ (height-y(d.y)) +')';
+        });
+
+    bar.append('rect')
+        .attr('x',0)
+        .attr('width',function(d,i){
+            return x(d.dx)-1
+        })
+        .attr('height',function(d,i){
+            return y(d.y);
+        })
+        .attr('fill','steelblue');
+
+    bar.append('text')
+        .attr('x',5)
+        .attr('y',20)
+        .style({
+            'font-size':12,
+            'fill': '#fff'
+        })
+        .text(function(d,i){
+            return d[0]+' - '+d[d.length-1]
+        })
+
+  </script>
+</body>
+</html>

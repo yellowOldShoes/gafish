@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>尺码工具</title>
+<style type="text/css">
+    *{font-size: 12px;margin: 0;padding: 0;font-style: normal;font-weight: 400;list-style: none;}
+    .text{
+        border: 1px solid #ccc;
+        padding: 2px;
+    }
+    .text-s{
+        width: 30px;
+    }
+    .text-m{
+        width: 50px;
+    }
+    .text-b{
+        width: 350px;
+    }
+    .between{
+        border-bottom: 1px dashed #ccc;
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+    }
+    .clearfix{
+        zomm: 1;
+    }
+    .clearfix:after {
+        visibility: hidden;
+        display: block;
+        font-size: 0;
+        content: " ";
+        clear: both;
+        height: 0;
+    }
+
+    .size-tool{
+        width: 770px;
+    }
+
+    .size-template{
+        padding-top: 20px;
+        text-align: right;
+    }
+    .size-template .import{
+        background: #569adb;
+        border: 1px solid #458acc;
+        padding: 5px 15px;
+        font-size: 14px;
+        color: #fff;
+        border-radius: 3px;
+        cursor: pointer;
+        margin-right: 10px;
+    }
+    .size-template a{
+        color: #569adb;
+        text-decoration: none;
+    }
+
+    .size-table .options{
+        padding-bottom: 20px;
+    }
+    .size-table .options .trait{
+        float: right;
+    }
+    .size-table .options .trait li{
+        float: left;
+        margin-right: 20px;
+    }
+    .size-table .options .type{
+    }
+    .size-table .table table{
+        width: 100%;
+        border-collapse: collapse;
+        border: 1px solid #ccc;
+    }
+    .size-table .table td,
+    .size-table .table th{
+        border: 1px solid #ccc;
+        text-align: center;
+        padding: 5px 10px;
+    }
+    .size-table .table th{
+        background: #eee;
+    }
+    .size-table .table .more{
+        padding-top: 10px;
+    }
+    .size-table .table .more .note{
+        float: right;
+    }
+    .size-table .table .more .insert{
+        background: #eee;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        padding: 5px 10px;
+        cursor: pointer;
+    }
+    .size-foot .graphic{
+        margin-top: 20px;
+        padding: 1px;
+        border: 1px solid #eee;
+    }
+    .size-foot .graphic ul{
+        background: #eee;
+    }
+    .size-foot .graphic li{
+        float: left;
+        width: 80px;
+        margin-right: 20px;
+        padding: 10px;
+        text-align: center;
+    }
+    .size-foot .graphic img{
+        width: 80px;
+        height: 150px;
+    }
+    .size-foot .graphic em{
+        display: block;
+        line-height: 20px;
+    }
+    .size-foot .note{
+        padding-top: 10px;
+        text-align: right;
+    }
+    .size-submit{
+        text-align: center;
+    }
+    .size-submit button{
+        background: #569adb;
+        border: 1px solid #458acc;
+        border-radius: 3px;
+        padding: 10px 30px;
+        color: #fff;
+        font-size: 14px;
+        cursor: pointer;
+    }
+</style>
+</head>
+<body>
+<div class="size-tool">
+    <div class="size-template between">
+        <button class="import">导入尺码模板</button>
+        <a href="" target="_blank">查看/新增尺码模板&raquo;</a>
+    </div>
+    <div class="size-table between">
+        <div class="options clearfix">
+            <ul class="trait">
+                <li><label><input type="checkbox">身高</label></li>
+                <li><label><input type="checkbox">体重</label></li>
+                <li><label><input type="checkbox">肩宽</label></li>
+                <li><label><input type="checkbox">胸围</label></li>
+                <li><label><input type="checkbox">腰围</label></li>
+                <li><label><input type="checkbox">臀围</label></li>
+            </ul>
+            <div class="type">自动转换为：<label><input type="checkbox"> 美国码</label> </div>
+        </div>
+        <div class="table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>中国码</th>
+                        <th>美国码</th>
+                        <th>适合身高(CM)</th>
+                        <th>适合体重(KG)</th>
+                        <th>适合肩宽(CM)</th>
+                        <th>适合胸围(CM)</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="text" class="text text-m"></td>
+                        <td><input type="text" class="text text-m"></td>
+                        <td><input type="text" class="text text-s"> -- <input type="text" class="text text-s"></td>
+                        <td><input type="text" class="text text-m"></td>
+                        <td><input type="text" class="text text-m"></td>
+                        <td><input type="text" class="text text-m"></td>
+                        <td><input type="text" class="text text-m"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="more clearfix">
+                <div class="note">
+                    备注：<input type="text" class="text text-b" placeholder="需要特别说明的信息">
+                </div>
+                <button class="insert">插入一行</button>
+            </div>
+        </div>
+    </div>
+    <div class="size-foot between">
+        <label><input type="checkbox"> 添加脚型图</label>
+        <div class="graphic">
+            <ul class="clearfix">
+                <li>
+                    <em>标准脚码</em>
+                    <select>
+                        <option>选大一码</option>
+                        <option selected>选标准码</option>
+                        <option>选小一码</option>
+                    </select>
+                    <img src="http://img0.bdstatic.com/img/image/shouye/mnqc-11642495006.jpg">
+                </li>
+                <li>
+                    <em>标准脚码</em>
+                    <select>
+                        <option>选大一码</option>
+                        <option selected>选标准码</option>
+                        <option>选小一码</option>
+                    </select>
+                    <img src="http://img0.bdstatic.com/img/image/shouye/mnqc-11642495006.jpg">
+                </li>
+            </ul>
+        </div>
+        <div class="note">
+            备注：<input type="text" class="text text-b" placeholder="需要特别说明的信息">
+        </div>
+    </div>
+    <div class="size-submit">
+        <button>确定</button>
+    </div>
+</div>
+<script type="text/javascript" src="http://g.tbcdn.cn/kissy/k/1.4.4/seed-min.js"></script>
+<script type="text/javascript">
+    KISSY.add('sizeTool',function(S,Node){
+        var $ = Node.all;
+    },{
+        requires: [
+            'node'
+        ]
+    });
+
+    KISSY.use('sizeTool');
+</script>
+</body>
+</html>

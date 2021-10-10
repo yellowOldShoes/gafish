@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>svg</title>
+</head>
+<body>
+
+<style>
+    html,
+    body{
+        margin: 0;
+        padding: 0;
+        height: 100%;
+    }
+</style>
+<svg width=100% height=100%>
+    <defs>
+        <radialGradient id="demoRadialGradient" cx=0.5 cy=0.5 r=0.5 fx=1 fy=0.5>
+            <stop offset="0" stop-color="#9f9"/>
+            <stop offset="1" stop-color="#373"/>
+        </radialGradient>
+        <linearGradient id="demoLinearGradient" x1=0 y1=0 x2=0 y2=.3 spreadMethod="reflect">
+            <stop offset="0" stop-color="#9f9"/>
+            <stop offset="1" stop-color="#373"/>
+        </linearGradient>
+        <pattern id="demoPattern" x=0 y=0 width=14 height=14 patternUnits="userSpaceOnUse" patternContentUnits="userSpaceOnUse">
+            <circle cx=7 cy=7 r=5 fill="#ddd" fill="url(#demoLinearGradient)"></circle>
+        </pattern>
+    </defs>
+    <rect x=0 y=0 width=100% height=33% fill="url(#demoPattern)"></rect>
+    <rect x=0 y=33% width=100% height=33% fill="url(#demoLinearGradient)"></rect>
+    <rect x=0 y=66% width=100% height=33% fill="url(#demoRadialGradient)"></rect>
+    <defs>
+      <radialGradient id="r1" cx=".3" cy=".3" r=".7">
+        <stop offset="0%" stop-color="#fff"></stop>
+        <stop offset="30%" stop-color="#9f9"></stop>
+        <stop offset="70%" stop-color="#373"></stop>
+        <stop offset="100%" stop-color="#000"></stop>
+      </linearGradient>
+    </defs>
+    <circle cx="85" cy="85" r="75" fill="url(#r1)"/>
+</svg>
+</body>
+</html>

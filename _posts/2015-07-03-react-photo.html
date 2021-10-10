@@ -1,0 +1,119 @@
+---
+layout: default
+title: React演示-查看图片小组件
+---
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+    }
+    #photoApp{
+      margin: 50px;
+      padding: 50px;
+      border: 1px solid #eee;
+      font-size: 12px;
+    }
+    #newPhoto{
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+    }
+    #status{
+      display: none;
+      margin: 10px 0 0;
+      background: #eee;
+      padding: 10px;
+    }
+    #list{
+      list-style: none;
+      overflow: hidden;
+    }
+    #list li{
+      float: left;
+      margin: 10px 10px 0 0;
+    }
+    #list img{
+      width: 100px;
+      height: 100px;
+    }
+    #preview{
+      cursor: pointer;
+      display: none;
+      margin-top: 10px;
+      padding: 10px;
+      border: 1px solid #ddd;
+      text-align: center;
+    }
+</style>
+
+<script src="//cdn.bootcss.com/react/0.13.3/react.js"></script>
+<script src="//cdn.bootcss.com/react/0.13.3/JSXTransformer.js"></script>
+
+<div id="content"></div>
+<script type="text/jsx">
+  var States = React.createClass({
+    render: function(){
+      var len = this.props.items.length;
+      var d = len>0 ? 'block':'none';
+      var style = {display:d};
+      return (
+        <div id="status" style={style}>当前共有{len}张照片</div>
+      )
+    }
+  });
+  var List = React.createClass({
+    render: function(){
+      var len = this.props.items.length;
+      var d = len>0 ? 'block':'none';
+      var style = {display:d};
+      return (
+        <ul id="list" style={style}>
+        {
+          this.props.items.map(function(item){
+            return <li><a href="javascript:{}"><img src={item} alt=""/></a></li>
+          })
+        }
+        </ul>
+      )
+    }
+  });
+  var Preview = React.createClass({
+    render: function(){
+      return (
+        <div id="preview"></div>
+      )
+    }
+  });
+  var PhotoApp = React.createClass({
+    getInitialState: function(){
+      return {
+        items: []
+      }
+    },
+    handleSubmit: function(e){
+        if (e.keyCode != 13 || !e.target.value) {return};
+        this.setState({
+          items: this.state.items.concat([e.target.value])
+        });
+        React.findDOMNode(this.refs.newPhoto).value = '';
+    },
+    render: function(){
+      return (
+        <div id="photoApp">
+        <header>
+          <input type="text" id="newPhoto" ref="newPhoto" placeholder="输入图片地址后按回车键" onKeyUp={this.handleSubmit} />
+        </header>
+        <section>
+          <States items={this.state.items}/>
+          <List items={this.state.items} />
+          <Preview />
+        </section>
+        </div>
+      )
+    }
+  });
+  React.render(
+    <PhotoApp />,
+    document.querySelector('#content')
+  )
+</script>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hello D3</title>
+  <script src="d3.js"></script>
+  <style>
+    #container{
+      position: relative;
+      width: 300px;
+      height: 100px;
+      border: 1px solid #295;
+      overflow: hidden;
+    }
+    #container div{
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 98px;
+      height: 98px;
+      background: #eee;
+      border: 1px solid #ccc;
+      line-height: 98px;
+      text-align: center;
+      font-size: 50px;
+    }
+    #container .end{
+      background: #999;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+
+<div id="container"></div>
+
+<script>
+  var data = [1,2,3];
+  var index = data.length;
+  var container = d3.select('#container');
+
+  var divs = container.selectAll('div')
+  function render(){
+    divs = divs.data(data, function(d,i) {return d;});
+    divs
+      .enter()
+      .append('div')
+      .style('width',0)
+      .style('height',0)
+      .style('left',function(d,i) {
+        return (i+1)*100+'px';
+      })
+
+    divs
+      .transition()
+      .duration(500)
+      .style('width','98px')
+      .style('height','98px')
+      .style('left',function(d,i) {
+        return i*100+'px'
+      })
+      .text(function(d) {
+        return d;
+      })
+
+    divs
+      .exit()
+      .transition()
+      .duration(500)
+      .style('width','0px')
+      .style('height','0px')
+      .style('left',function() {
+        return '-100px';
+      })
+      .remove()
+
+  }
+  setInterval(function() {
+    index++;
+    data.shift();
+    data.push(index);
+    if (index>=999) {
+      index = 0;
+    }
+    render()
+  }, 1000);
+</script>

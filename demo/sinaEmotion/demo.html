@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SinaEmotion DEMO</title>
+  <script src="sinaEmotion.js"></script>
+  <style>
+    h2{
+      font-family: 'Microsoft Yahei';
+      font-weight: bold;
+      border-bottom: 1px solid #000;
+    }
+    .red{
+      color: #f00;
+    }
+  </style>
+</head>
+<body>
+  <h2>获取新浪微博表情图片地址</h2>
+  <div id="demo1"></div>
+  <pre>
+    var text = ['[微笑]','[嘻嘻]','[哈哈]'][Math.round(Math.random()*2)];
+    var url = SinaEmotion.get(text);
+    document.querySelector('#demo1').innerHTML = text+'==>'+url;
+  </pre>
+  <script>
+    var text = ['[微笑]','[嘻嘻]','[哈哈]'][Math.round(Math.random()*2)];
+    var url = SinaEmotion.get(text);
+    document.querySelector('#demo1').innerHTML = text+'==>'+url;
+  </script>
+
+  <h2>转换内容中的新浪微博表情</h2>
+  <div id="demo2"></div>
+  <pre>
+    var text = '世上有两种人。一种人聪明[微笑]，一种人富有[嘻嘻]，聪明的人有见地不会随大流，富有的呢，有勇又有谋[哈哈]';
+    var html = SinaEmotion.convert(text);
+    document.querySelector('#demo2').innerHTML = html;
+  </pre>
+  <script>
+    var text = '世上有两种人。一种人聪明[微笑]，一种人富有[嘻嘻]，聪明的人有见地不会随大流，富有的呢，有勇又有谋[哈哈]';
+    var html = SinaEmotion.convert(text);
+    document.querySelector('#demo2').innerHTML = html;
+  </script>
+</body>
+</html>

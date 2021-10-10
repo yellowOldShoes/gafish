@@ -1,0 +1,1035 @@
+---
+layout: default
+title: D3演示-基础图表
+---
+<script src="//cdn.bootcss.com/d3/3.5.6/d3.js"></script>
+
+<!--柱状图-->
+<style>
+  #barChart{
+    position: relative;
+    width: 600px;
+    height: 120px;
+    border-bottom: 1px solid #000;
+    overflow: hidden;
+  }
+  #barChart div{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 28px;
+    height: 0;
+    background: #295;
+    text-align: center;
+    color: #000;
+  }
+  #barChart span{
+    display: inline-block;
+    font-size: 12px;
+    line-height: 20px;
+    margin-top: -20px;
+  }
+</style>
+
+<h2>柱状图</h2>
+
+<div id="barChart"></div>
+
+<script>
+  var id = 0;
+  var barData = [];
+  var container = d3.select('#barChart');
+
+  function render(){
+    var selection = container
+      .selectAll('div')
+      .data(barData, function(d,i) {
+        return d.id;
+      });
+
+    selection
+      .enter()
+      .append('div')
+      .style('left', function(d,i) {
+        return barLeft(i+1);
+      })
+      .append('span')
+
+    selection
+      .style('background',function(d,i) {
+        return barBg(d);
+      })
+      .transition()
+      .duration(300)
+      .style('height',function(d,i) {
+        return barHeight(d)+'px';
+      })
+      .style('left', function(d,i) {
+        return barLeft(i);
+      })
+      .select('span')
+      .text(function(d,i) {
+        return d.value;
+      })
+
+    selection
+      .exit()
+      .transition()
+      .duration(200)
+      .style('width',0)
+      .style('height',0)
+      .style('left', function(d,i) {
+        return barLeft(-1);
+      })
+      .remove()
+  }
+
+  function barLeft(i) {
+    return i * (28+2)+'px';
+  }
+
+  function barHeight(d) {
+    var linear = d3.scale.linear().domain([0,1000]).range([0,100])
+    return d3.round(linear(d.value));
+  }
+
+  function barBg(d) {
+    var linear = d3.scale.linear().domain([0,1000]).range(['#cfc','#295']);
+    return linear(d.value);
+  }
+
+  function push() {
+    barData.push({
+      id: ++id,
+      value: Math.floor(Math.random()*1000)
+    });
+  }
+
+  for (var i = 0; i < 20; i++) {
+    push();
+  }
+
+  setInterval(function() {
+    barData.shift();
+    push();
+    render()
+  }, 1000);
+</script>
+
+<!--折线图-->
+<h2>折线图</h2>
+<style>
+  #lineChart{}
+  #lineChart path{
+    fill: none;
+    stroke-width: 1px;
+    stroke: #000;
+  }
+  #lineChart line{
+    stroke: #000;
+    stroke-width: 1px;
+  }
+  #lineChart text{
+    font-size: 12px;
+    /*transform: rotate(-45deg);*/
+  }
+</style>
+<div id="lineChart"></div>
+<button id="updateLineChart">update</button>
+
+<script>
+  (function () {
+    function LineChart(){
+      var _lineChart = {};
+      var _width = 500;
+      var _height = 300;
+      var _margin = {
+        top: 50,
+        right: 50,
+        bottom: 50,
+        left: 50
+      };
+      var _data = [];
+      var _x;
+      var _y;
+      var _svg;
+      var _bodyG;
+      var _axesG;
+
+      function renderAxes(){
+        if(!_axesG){
+          _axesG = _svg.append('g')
+              .classed('axes',true)
+              .attr('transform','translate('+ _margin.left +','+ _margin.top +')');
+        }
+        renderXAxes();
+        renderYAxes();
+      }
+
+      function renderXAxes(){
+        var xAxes = _axesG.append('g')
+            .classed('aAxes',true)
+            .attr('transform','translate(0,'+_height+')')
+        var axis = d3.svg.axis()
+            .innerTickSize(10)
+            .orient('bottom')
+            .outerTickSize(10)
+            .scale(_x)
+            .tickPadding(10)
+            .ticks(d3.time.month)
+            .tickFormat(d3.time.format("%m-%d"))
+        xAxes.call(axis);
+      }
+
+      function renderYAxes(){
+        var yAxes = _axesG.append('g')
+            .classed('yAxes',true)
+        var yaxis = d3.svg.axis()
+            .scale(_y)
+            .orient('left')
+        yAxes.call(yaxis);
+      }
+
+      function renderBody(){
+        if(!_bodyG){
+          _bodyG = _svg.append('g')
+              .classed('body',true)
+              .attr('transform','translate('+ _margin.left +','+ _margin.top +')');
+        }
+        renderLines();
+        renderDots();
+      }
+
+      function renderLines(){
+        var _line = d3.svg.line()
+            .x(function(d){return _x(d.date)})
+            .y(function(d){return _y(d.total)});
+
+        var linePath = _bodyG.selectAll('path.line')
+            .data(_data);
+
+        linePath
+            .enter()
+            .append('path')
+            .attr('fill','none')
+            .classed('line',true)
+
+        linePath
+            .transition()
+            .duration(300)
+            .attr('d', function(d){
+              return _line(d);
+            })
+      }
+
+
+      function renderDots(){
+        _data.forEach(function(d,i){
+          var dotCircle = _bodyG.selectAll('circle.dot'+i).data(d);
+
+          dotCircle
+              .enter()
+              .append('circle')
+              .classed('dot'+i,true)
+
+          dotCircle
+              .transition()
+              .attr('cx', function(d){
+                return _x(d.date);
+              })
+              .attr('cy', function (d) {
+                return _y(d.total);
+              })
+              .attr('r',4.5)
+        })
+      }
+
+      _lineChart.render = function(){
+        if(!_svg){
+          _svg = d3.select('#lineChart').append('svg')
+              .attr('width',_width+_margin.left+_margin.right)
+              .attr('height',_height+_margin.top+_margin.bottom);
+          renderAxes(_svg);
+        }
+        renderBody();
+        return _lineChart;
+      }
+
+      _lineChart.addSeries = function(d){
+        _data.push(d);
+        return _lineChart;
+      }
+
+      _lineChart.x = function(x){
+        _x = x.range([0,_width]);
+        return _lineChart;
+      }
+
+      _lineChart.y = function(y){
+        _y = y.range([_height,0]);
+        return _lineChart;
+      }
+
+      return _lineChart;
+    }
+
+
+    function updateLineChart() {
+      for (var i = 0; i < data.length; ++i) {
+        for (var j = 0; j < 10; ++j){
+          data[i][j].total = Math.floor(Math.random() * 100);
+        }
+      }
+
+      linechart.render();
+    }
+
+    var linechart = LineChart();
+    var data = [];
+    for (var i = 0; i < 2; ++i) {
+      var _d = [];
+      for (var j = 0; j < 10; ++j) {
+        var date = d3.time.format('%Y-%m-%d').parse("2015-" + j + "-10");
+        _d.push({
+          "date": date, "total": Math.floor(Math.random() * 100)
+        })
+      }
+      data.push(_d);
+    }
+
+
+    var xDomain = d3.extent(data[0], function(d){
+      return d.date;
+    });
+
+    linechart
+        .x(d3.time.scale().domain(xDomain).nice())
+        .y(d3.scale.linear().domain([0,100]).nice());
+
+    data.forEach(function(d,i){
+      linechart.addSeries(d);
+    })
+
+    linechart.render();
+
+    setInterval(function(){updateLineChart()},2000);
+
+    d3.select('#updateLineChart')[0][0].onclick = updateLineChart;
+
+  })()
+</script>
+
+
+
+<!--雷达图-->
+<style>
+  #lineRadialChart{}
+  #lineRadialChart circle,
+  #lineRadialChart path{
+    fill: none;
+    stroke-width: 1px;
+    stroke: #000;
+  }
+  #lineRadialChart .lineCircle{
+    stroke: #ccc;
+  }
+  #lineRadialChart line{
+    stroke: #000;
+    stroke-width: 1px;
+  }
+  #lineRadialChart text{
+    font-size: 12px;
+    /*transform: rotate(-45deg);*/
+  }
+</style>
+<h2>雷达图</h2>
+<div id="lineRadialChart"></div>
+<button id="updateLineRadialChart">update</button>
+
+<script>
+  (function(){
+    function LineRadialChart(){
+      var _lineRadialChart = {};
+      var _width = 300;
+      var _height = 300;
+      var _margin = {
+        top: 50,
+        right: 50,
+        bottom: 50,
+        left: 50
+      };
+      var _max = 10;
+      var _linear = d3.scale.linear().domain([0,100]).range([0,_width/2]);
+      var _radial = d3.svg.line.radial()
+          .radius(function(d) {
+            return _linear(d)
+          })
+//          .interpolate("basis")
+          .angle(function(d, i) {
+            if (i === _max) {
+              i = 0;
+            }
+            return (i / _max) * 2 * Math.PI;
+          });
+      var _data = [];
+      var _svg;
+      var _bodyG;
+      var _circle;
+
+      function renderBody(){
+        if(!_bodyG){
+          _bodyG = _svg.append('g')
+              .classed('body',true)
+              .attr('transform','translate('+ (_width/2 + _margin.left) +','+ (_height/2 + _margin.top) +')');
+        }
+        renderCircle();
+        renderLineCircle();
+        renderLines();
+      }
+
+      function renderCircle(){
+        if(!_circle){
+          _circle = _bodyG.append('circle')
+              .attr('r',_width/2)
+              .classed('circle',true)
+        }
+      }
+
+      function renderLineCircle(){
+        _data.forEach(function(_d,i){
+          var circle = _bodyG.selectAll('.lineCircle').data(_d);
+          circle
+              .enter()
+              .append('circle')
+              .classed('lineCircle',true)
+          circle
+              .transition()
+              .attr('r',function(d){
+                return _linear(d);
+              })
+
+          var radial = _bodyG.selectAll('.radial').data(_d);
+          radial
+              .enter()
+              .append('line')
+              .classed('radial',true)
+              .attr('transform',function(d,i){
+                return 'rotate('+ ((i/_max)*360-90) +')';
+              })
+          radial
+              .transition()
+              .attr('x2',function(d){
+                return _linear(d)
+              })
+        })
+      }
+
+      function renderLines(){
+        var series = _bodyG.selectAll('.series').data(_data);
+        series
+            .enter()
+            .append('path')
+            .classed('series',true)
+        series
+            .transition()
+            .attr("d", _radial)
+      }
+
+      _lineRadialChart.render = function(){
+        if(!_svg){
+          _svg = d3.select('#lineRadialChart').append('svg')
+              .attr('width',_width+_margin.left+_margin.right)
+              .attr('height',_height+_margin.top+_margin.bottom);
+        }
+        renderBody();
+        return _lineRadialChart;
+      }
+
+      _lineRadialChart.addSeries = function(d){
+        _data = d;
+        _max = d[0].length-1;
+        return _lineRadialChart;
+      }
+
+      return _lineRadialChart;
+    }
+
+    function updateLineRadialChart(){
+      for (var i = 0; i < data.length; i++) {
+        var _d = [];
+        for (var j = 0; j < 5; j++) {
+          _d.push( Math.floor(Math.random() * 90+10))
+        }
+        data[i] = _d;
+      }
+      for (var i = 0; i < data.length; i++) {
+        data[i].push(data[i][0]);
+      }
+      lineRadialchart.addSeries(data).render();
+    }
+
+
+
+    var lineRadialchart = LineRadialChart();
+    var data = [[]];
+    updateLineRadialChart();
+
+    setInterval(function(){updateLineRadialChart()},2000)
+
+    d3.select('#updateLineRadialChart')[0][0].onclick = updateLineRadialChart;
+
+  })()
+</script>
+
+
+
+
+
+<!--面积图-->
+<h2>面积图</h2>
+<style>
+  #areaChart{}
+  #areaChart path,
+  #areaChart .line{
+    fill: none;
+    stroke-width: 1px;
+    stroke: #000;
+  }
+  #areaChart .area{
+    fill: #eee;
+    stroke-width: 0;
+  }
+  #areaChart line{
+    stroke: #000;
+    stroke-width: 1px;
+  }
+  #areaChart text{
+    font-size: 12px;
+  }
+</style>
+<div id="areaChart"></div>
+<button id="updateareaChart">update</button>
+
+<script>
+  (function () {
+    function AreaChart(){
+      var _areaChart = {};
+      var _width = 500;
+      var _height = 300;
+      var _margin = {
+        top: 50,
+        right: 50,
+        bottom: 50,
+        left: 50
+      };
+      var _data = [];
+      var _x;
+      var _y;
+      var _svg;
+      var _bodyG;
+      var _axesG;
+
+      function renderAxes(){
+        if(!_axesG){
+          _axesG = _svg.append('g')
+              .classed('axes',true)
+              .attr('transform','translate('+ _margin.left +','+ _margin.top +')');
+        }
+        renderXAxes();
+        renderYAxes();
+      }
+
+      function renderXAxes(){
+        var xAxes = _axesG.append('g')
+            .classed('aAxes',true)
+            .attr('transform','translate(0,'+_height+')')
+        var axis = d3.svg.axis()
+            .innerTickSize(10)
+            .orient('bottom')
+            .outerTickSize(10)
+            .scale(_x)
+            .tickPadding(10)
+            .ticks(d3.time.month)
+            .tickFormat(d3.time.format("%m-%d"))
+        xAxes.call(axis);
+      }
+
+      function renderYAxes(){
+        var yAxes = _axesG.append('g')
+            .classed('yAxes',true)
+        var yaxis = d3.svg.axis()
+            .scale(_y)
+            .orient('left')
+        yAxes.call(yaxis);
+      }
+
+      function renderBody(){
+        if(!_bodyG){
+          _bodyG = _svg.append('g')
+              .classed('body',true)
+              .attr('transform','translate('+ _margin.left +','+ _margin.top +')');
+        }
+        renderLines();
+        renderDots();
+      }
+
+      function renderLines(){
+        var _area = d3.svg.area()
+            .x(function(d){return _x(d.date)})
+            .y0(function(d){return _height-1})
+            .y1(function(d){return _y(d.total)});
+
+        var areaPath = _bodyG.selectAll('path.area')
+            .data(_data);
+
+        areaPath
+            .enter()
+            .append('path')
+            .attr('fill','none')
+            .classed('area',true)
+
+        areaPath
+            .transition()
+            .duration(300)
+            .attr('d', function(d){
+              return _area(d);
+            })
+
+        var _line = d3.svg.line()
+            .x(function(d){return _x(d.date)})
+            .y(function(d){return _y(d.total)});
+
+        var linePath = _bodyG.selectAll('path.line')
+            .data(_data);
+
+        linePath
+            .enter()
+            .append('path')
+            .attr('fill','none')
+            .classed('line',true)
+
+        linePath
+            .transition()
+            .duration(300)
+            .attr('d', function(d){
+              return _line(d);
+            })
+      }
+
+
+      function renderDots(){
+        _data.forEach(function(d,i){
+          var dotCircle = _bodyG.selectAll('circle.dot'+i).data(d);
+
+          dotCircle
+              .enter()
+              .append('circle')
+              .classed('dot'+i,true)
+
+          dotCircle
+              .transition()
+              .attr('cx', function(d){
+                return _x(d.date);
+              })
+              .attr('cy', function (d) {
+                return _y(d.total);
+              })
+              .attr('r',4.5)
+        })
+      }
+
+      _areaChart.render = function(){
+        if(!_svg){
+          _svg = d3.select('#areaChart').append('svg')
+              .attr('width',_width+_margin.left+_margin.right)
+              .attr('height',_height+_margin.top+_margin.bottom);
+          renderAxes(_svg);
+        }
+        renderBody();
+        return _areaChart;
+      }
+
+      _areaChart.addSeries = function(d){
+        _data = d
+        return _areaChart;
+      }
+
+      _areaChart.x = function(x){
+        _x = x.range([0,_width]);
+        return _areaChart;
+      }
+
+      _areaChart.y = function(y){
+        _y = y.range([_height,0]);
+        return _areaChart;
+      }
+
+      return _areaChart;
+    }
+
+
+    function updateAreaChart() {
+
+
+      for (var i = 0; i < data.length; ++i) {
+        var _d = [];
+        for (var j = 0; j < 10; ++j) {
+          var date = d3.time.format('%Y-%m-%d').parse("2015-" + j + "-10");
+          _d.push({
+            "date": date, "total": Math.floor(Math.random() * 100)
+          })
+        }
+        data[i] = _d;
+      }
+
+      var xDomain = d3.extent(data[0], function(d){
+        return d.date;
+      });
+
+      areachart
+          .x(d3.time.scale().domain(xDomain).nice())
+          .y(d3.scale.linear().domain([0,100]).nice());
+
+      areachart.addSeries(data);
+
+      areachart.render();
+    }
+
+    var areachart = AreaChart();
+    var data = [[]];
+
+    updateAreaChart();
+
+    setInterval(function(){updateAreaChart()},2000);
+
+    d3.select('#updateAreaChart')[0][0].onclick = updateAreaChart;
+
+  })()
+</script>
+
+
+
+<!--雷达面积图-->
+<style>
+  #areaRadialChart{}
+  #areaRadialChart circle,
+  #areaRadialChart path{
+    fill: none;
+    stroke-width: 1px;
+    stroke: #000;
+  }
+  #areaRadialChart .series{
+    fill: #eee;;
+  }
+  #areaRadialChart .lineCircle{
+    stroke: #ccc;
+  }
+  #areaRadialChart line{
+    stroke: #000;
+    stroke-width: 1px;
+  }
+  #areaRadialChart text{
+    font-size: 12px;
+    /*transform: rotate(-45deg);*/
+  }
+</style>
+<h2>雷达面积图</h2>
+<div id="areaRadialChart"></div>
+<button id="updateAreaRadialChart">update</button>
+
+<script>
+  (function(){
+    function AreaRadialChart(){
+      var _areaRadialChart = {};
+      var _width = 300;
+      var _height = 300;
+      var _margin = {
+        top: 50,
+        right: 50,
+        bottom: 50,
+        left: 50
+      };
+      var _max = 10;
+      var _linear = d3.scale.linear().domain([0,100]).range([0,_width/2]);
+      var _radial = d3.svg.area.radial()
+          .radius(function(d) {
+            return _linear(d)
+          })
+          .innerRadius(function(d) { return _linear(d/2); })
+          .outerRadius(function(d) { return _linear(d); })
+          .angle(function(d, i) {
+            if (i === _max) {
+              i = 0;
+            }
+            return (i / _max) * 2 * Math.PI;
+          });
+      var _data = [];
+      var _svg;
+      var _bodyG;
+
+      function renderBody(){
+        if(!_bodyG){
+          _bodyG = _svg.append('g')
+              .classed('body',true)
+              .attr('transform','translate('+ (_width/2 + _margin.left) +','+ (_height/2 + _margin.top) +')');
+        }
+        renderCircle();
+        renderLineCircle();
+        renderLines();
+      }
+
+      function renderCircle(){
+        var circle = _bodyG.append('circle')
+            .attr('r',_width/2)
+            .classed('circle',true)
+      }
+
+      function renderLineCircle(){
+        _data.forEach(function(_d,i){
+          var circle = _bodyG.selectAll('.lineCircle').data(_d);
+          circle
+              .enter()
+              .append('circle')
+              .classed('lineCircle',true)
+          circle
+              .transition()
+              .attr('r',function(d){
+                return _linear(d);
+              })
+
+          var radial = _bodyG.selectAll('.radial').data(_d);
+          radial
+              .enter()
+              .append('line')
+              .classed('radial',true)
+              .attr('transform',function(d,i){
+                return 'rotate('+ ((i/_max)*360-90) +')';
+              })
+          radial
+              .transition()
+              .attr('x2',function(d){
+                return _linear(d)
+              })
+        })
+      }
+
+      function renderLines(){
+        var series = _bodyG.selectAll('.series').data(_data);
+        series
+            .enter()
+            .append('path')
+            .classed('series',true)
+        series
+            .transition()
+            .attr("d", _radial)
+      }
+
+      _areaRadialChart.render = function(){
+        if(!_svg){
+          _svg = d3.select('#areaRadialChart').append('svg')
+              .attr('width',_width+_margin.left+_margin.right)
+              .attr('height',_height+_margin.top+_margin.bottom);
+        }
+        renderBody();
+        return _areaRadialChart;
+      }
+
+      _areaRadialChart.addSeries = function(d){
+        _data = d;
+        _max = d[0].length-1;
+        return _areaRadialChart;
+      }
+
+      return _areaRadialChart;
+    }
+
+    function updateAreaRadialChart(){
+      for (var i = 0; i < data.length; i++) {
+        var _d = [];
+        for (var j = 0; j < 5; j++) {
+          _d.push( Math.floor(Math.random() * 90+10))
+        }
+        data[i] = _d;
+      }
+      for (var i = 0; i < data.length; i++) {
+        data[i].push(data[i][0]);
+      }
+      areaRadialchart.addSeries(data).render();
+    }
+
+
+
+    var areaRadialchart = AreaRadialChart();
+    var data = [[]];
+    updateAreaRadialChart();
+
+    setInterval(function(){updateAreaRadialChart()},2000)
+
+    d3.select('#updateAreaRadialChart')[0][0].onclick = updateAreaRadialChart;
+
+  })()
+</script>
+
+
+
+<!--弧形-->
+<style>
+  #areaRadialChart{}
+  #areaRadialChart circle,
+  #areaRadialChart path{
+    fill: none;
+    stroke-width: 1px;
+    stroke: #000;
+  }
+  #areaRadialChart .series{
+    fill: #eee;;
+  }
+  #areaRadialChart .lineCircle{
+    stroke: #ccc;
+  }
+  #areaRadialChart line{
+    stroke: #000;
+    stroke-width: 1px;
+  }
+  #areaRadialChart text{
+    font-size: 12px;
+    /*transform: rotate(-45deg);*/
+  }
+</style>
+<h2>弧形</h2>
+<div id="areaRadialChart"></div>
+<button id="updateAreaRadialChart">update</button>
+
+<script>
+  (function(){
+    function AreaRadialChart(){
+      var _areaRadialChart = {};
+      var _width = 300;
+      var _height = 300;
+      var _margin = {
+        top: 50,
+        right: 50,
+        bottom: 50,
+        left: 50
+      };
+      var _max = 10;
+      var _linear = d3.scale.linear().domain([0,100]).range([0,_width/2]);
+      var _radial = d3.svg.area.radial()
+          .radius(function(d) {
+            return _linear(d)
+          })
+          .innerRadius(function(d) { return _linear(d/2); })
+          .outerRadius(function(d) { return _linear(d); })
+          .angle(function(d, i) {
+            if (i === _max) {
+              i = 0;
+            }
+            return (i / _max) * 2 * Math.PI;
+          });
+      var _data = [];
+      var _svg;
+      var _bodyG;
+
+      function renderBody(){
+        if(!_bodyG){
+          _bodyG = _svg.append('g')
+              .classed('body',true)
+              .attr('transform','translate('+ (_width/2 + _margin.left) +','+ (_height/2 + _margin.top) +')');
+        }
+        renderCircle();
+        renderLineCircle();
+        renderLines();
+      }
+
+      function renderCircle(){
+        var circle = _bodyG.append('circle')
+            .attr('r',_width/2)
+            .classed('circle',true)
+      }
+
+      function renderLineCircle(){
+        _data.forEach(function(_d,i){
+          var circle = _bodyG.selectAll('.lineCircle').data(_d);
+          circle
+              .enter()
+              .append('circle')
+              .classed('lineCircle',true)
+          circle
+              .transition()
+              .attr('r',function(d){
+                return _linear(d);
+              })
+
+          var radial = _bodyG.selectAll('.radial').data(_d);
+          radial
+              .enter()
+              .append('line')
+              .classed('radial',true)
+              .attr('transform',function(d,i){
+                return 'rotate('+ ((i/_max)*360-90) +')';
+              })
+          radial
+              .transition()
+              .attr('x2',function(d){
+                return _linear(d)
+              })
+        })
+      }
+
+      function renderLines(){
+        var series = _bodyG.selectAll('.series').data(_data);
+        series
+            .enter()
+            .append('path')
+            .classed('series',true)
+        series
+            .transition()
+            .attr("d", _radial)
+      }
+
+      _areaRadialChart.render = function(){
+        if(!_svg){
+          _svg = d3.select('#areaRadialChart').append('svg')
+              .attr('width',_width+_margin.left+_margin.right)
+              .attr('height',_height+_margin.top+_margin.bottom);
+        }
+        renderBody();
+        return _areaRadialChart;
+      }
+
+      _areaRadialChart.addSeries = function(d){
+        _data = d;
+        _max = d[0].length-1;
+        return _areaRadialChart;
+      }
+
+      return _areaRadialChart;
+    }
+
+    function updateAreaRadialChart(){
+      for (var i = 0; i < data.length; i++) {
+        var _d = [];
+        for (var j = 0; j < 5; j++) {
+          _d.push( Math.floor(Math.random() * 90+10))
+        }
+        data[i] = _d;
+      }
+      for (var i = 0; i < data.length; i++) {
+        data[i].push(data[i][0]);
+      }
+      areaRadialchart.addSeries(data).render();
+    }
+
+
+
+    var areaRadialchart = AreaRadialChart();
+    var data = [[]];
+    updateAreaRadialChart();
+
+    setInterval(function(){updateAreaRadialChart()},2000)
+
+    d3.select('#updateAreaRadialChart')[0][0].onclick = updateAreaRadialChart;
+
+  })()
+</script>
+

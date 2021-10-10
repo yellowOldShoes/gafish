@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>svg</title>
+</head>
+<body>
+
+<p>
+    SVG 意为可缩放矢量图形（Scalable Vector Graphics），它是用XML格式定义的图像，相对于JPG格式的图像来说，可以这么来理解：JPG是设计师的图像，SVG是程序开发者的图像；
+</p>
+<h3>矩形</h3>
+<svg width=200 height=200>
+  <rect width=100 height=100 fill="red" stroke="black" stroke-width=2 x=50 y=50 fill-opacity=0.5 stroke-opacity=0.6 rx=1 />
+</svg>
+<h3>圆形</h3>
+<svg width=200 height=200>
+  <circle cx=100 cy=100 r=50 fill=red stroke=black stroke-width=2 />
+</svg>
+<h3>椭圆</h3>
+<svg width=200 height=200>
+  <ellipse cx=100 cy=100 rx=50 ry=30 fill="red" stroke=black stroke-width=2 />
+</svg>
+<h3>直线</h3>
+<svg width=200 height=200>
+  <line x1=100 y1=100 x2=50 y2=50 stroke=black stroke-width=2 />
+</svg>
+<h3>多边形</h3>
+<svg width=200 height=200>
+  <polygon points="30,30 150,150 200,30" fill="red" stroke=black stroke-width=2 />
+</svg>
+<h3>折线</h3>
+<svg width=200 height=200>
+  <polyline points="30,30 150,150 150,30 50,5" fill=red stroke=black stroke-width=2 />
+</svg>
+<h3>路径</h3>
+<svg height="400" width="450">
+<path id="lineAB" d="M 100 350 l 150 -300" stroke="red" stroke-width="3" fill="none" />
+  <path id="lineBC" d="M 250 50 l 150 300" stroke="red" stroke-width="3" fill="none" />
+  <path d="M 175 200 l 150 0" stroke="green" stroke-width="3" fill="none" />
+  <path d="M 100 350 q 150 -300 300 0" stroke="blue" stroke-width="5" fill="none" />
+  <!-- Mark relevant points -->
+  <g stroke="black" stroke-width="3" fill="black">
+    <circle id="pointA" cx="100" cy="350" r="3" />
+    <circle id="pointB" cx="250" cy="50" r="3" />
+    <circle id="pointC" cx="400" cy="350" r="3" />
+  </g>
+  <!-- Label the points -->
+  <g font-size="30" font="sans-serif" fill="black" stroke="none" text-anchor="middle">
+    <text x="100" y="350" dx="-30">A</text>
+    <text x="250" y="50" dy="-10">B</text>
+    <text x="400" y="350" dx="30">C</text>
+  </g>
+  Sorry, your browser does not support inline SVG.
+</svg>
+
+</body>
+</html>

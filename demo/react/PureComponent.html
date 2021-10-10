@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Demo</title>
+<script src="react.js"></script>
+<script src="react-dom.js"></script>
+<script src="browser.min.js"></script>
+</head>
+<body>
+
+<div id="container"></div>
+<script type="text/babel">
+
+  const Demo1 = ({ name }) => {
+    console.log('Demo1')
+    return (
+      <div>Demo1: {name}</div>
+    );
+  };
+
+  const Demo2 = ({ name }) => {
+    console.log('Demo2')
+    return (
+      <div>Demo2: {name}</div>
+    );
+  };
+
+  class Demo3 extends React.PureComponent {
+    constructor(props) {
+      super(props);
+    }
+    render() {
+      console.log('Demo3')
+      return (
+        <div>Demo3: {this.props.name}</div>
+      );
+    }
+  }
+
+  class RootDemo extends React.Component {
+    constructor() {
+      super();
+      this.state = {
+        name: '',
+      };
+    }
+    componentDidMount() {
+      console.log('RootDemo componentDidMount');
+      setTimeout(() => {
+        this.setState({
+          name: 'gafish'
+        });
+      }, 1000);
+    }
+    render() {
+      console.log('====>')
+      console.log('RootDemo')
+      return (
+        <div>
+          <Demo1 name={this.state.name}/>
+          <Demo2 name={'xuhui'}/>
+          <Demo3 name={'xuhui'}/>
+        </div>
+      );
+    }
+  };
+
+  ReactDOM.render(
+    <RootDemo />,
+    document.querySelector('#container')
+  );
+
+</script>
+
+</body>
+</html>

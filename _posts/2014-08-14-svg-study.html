@@ -1,0 +1,255 @@
+---
+layout: default
+title:  SVG演示
+---
+
+<h3>SVG学习资源</h3>
+<ul>
+    <li><a href="//www.w3.org/TR/SVG/">W3C</a></li>
+    <li><a href="//www.w3cschool.cc/svg/svg-tutorial.html">SVG教程</a></li>
+    <li><a href="//www.imooc.com/learn/143">走进SVG（视频）</a></li>
+    <li><a href="//www.oxxostudio.tw/articles/201410/svg-tutorial.html">SVG 完整教學 31 天（台湾）</a></li>
+    <li><a href="//msdn.microsoft.com/zh-cn/library/gg193979">SVG动画 </a></li>
+    <li><a href="//svg-edit.googlecode.com/svn/branches/2.6/editor/svg-editor.html">SVG 在线绘制工具 </a></li>
+</ul>
+
+<svg width="0" height="0">
+    <defs id="">
+        <pattern id="demoPattern" patternUnits="userSpaceOnUse" x="0" y="0" width="20" height="20">
+            <path d="M 20 0,H 0 0,V 0 20" fill="none" stroke="#ddd" stroke-width="1"></path>
+        </pattern>
+    </defs>
+</svg>
+
+<h3>基本形状练习</h3>
+<svg width="100%" height="701">
+    <defs>
+        <line id="line" x1=20 y1=20 x2=100 y2=20  stroke="black" > </line>
+        <polyline id="polyline" points="220,20 230,50 260,60 230,70 220,100 210,70 180,60 210,50 220,20" stroke="black" stroke-width="10" fill="red" ></polyline>
+        <rect id="rect" x=340 y=20 width=100 height=40 rx=20 ry=20 fill="red" stroke="black"></rect>
+        <circle id="circle" cx=560 cy=60 r=40 fill="red" stroke="black"></circle>
+        <ellipse id="ellipse" cx=720 cy=40 rx=40 ry=20 fill="red" stroke="black"></ellipse>
+        <polygon id="polygon" points="820,60 920,60 820,120 870,20 920,120" fill="red" stroke="black" stroke-width="10"></polygon>
+        <symbol id="demo" fill="yellow" stroke="black">
+            <rect x="1000" y="80" width="100" height="20" />
+            <rect x="1040" y="60" width="20" height="100" />
+            <rect x="1040" y="60" width="20" height="100" stroke-width="0" />
+            <rect x="1000" y="80" width="100" height="20" stroke-width="0" />
+        </symbol>
+    </defs>
+    <rect id="" x="0" y="0" width="100%" height="100%" fill="url(#demoPattern)"></rect>
+
+    <use xlink:href="#line" />
+    <use xlink:href="#line" transform="translate(0 20)" stroke-opacity="0.2"/>
+    <use xlink:href="#line" transform="translate(0 40)" stroke-dasharray="20,40" />
+    <use xlink:href="#line" transform="translate(0 60)" stroke-dasharray="20,40" stroke-dashoffset="-20" />
+    <use xlink:href="#line" transform="translate(0 80)" stroke-width="10" stroke-linecap="butt" />
+    <use xlink:href="#line" transform="translate(0 100)" stroke-width="10" stroke-linecap="round" />
+    <use xlink:href="#line" transform="translate(0 120)" stroke-width="10" stroke-linecap="square" />
+
+    <use xlink:href="#polyline" stroke-linejoin="miter" />
+    <use xlink:href="#polyline" transform="translate(0 100)" stroke-linejoin="bevel" />
+    <use xlink:href="#polyline" transform="translate(0 200)" stroke-linejoin="round" />
+    <use xlink:href="#polyline" transform="translate(0 300)" stroke-linejoin="miter" stroke-linecap="butt" />
+    <use xlink:href="#polyline" transform="translate(0 400)" stroke-linejoin="miter" stroke-linecap="round" />
+    <use xlink:href="#polyline" transform="translate(0 500)" stroke-linejoin="miter" stroke-linecap="square" />
+
+    <use xlink:href="#rect" />
+
+    <use xlink:href="#circle" />
+
+    <use xlink:href="#ellipse" />
+
+    <use xlink:href="#polygon" fill-rule="nonzero" />
+    <use xlink:href="#polygon" transform="translate(0 100)" fill-rule="evenodd" />
+    <use xlink:href="#polygon" transform="translate(0 200)" fill-rule="nonzero" stroke-linejoin="miter" />
+    <use xlink:href="#polygon" transform="translate(0 300)" fill-rule="nonzero" stroke-linejoin="bevel" />
+    <use xlink:href="#polygon" transform="translate(0 400)" fill-rule="nonzero" stroke-linejoin="round" />
+
+    <use xlink:href="#demo" />
+</svg>
+<h3>PATH练习</h3>
+<svg width=100% height=450 stroke=black stroke-width=10 fill=red>
+    <path d="M10 10,L50 50,l100 -10,m-30 -30,H100,V100,h100,v100,z"></path>
+    <path d="M300 150,C300 50 400 50 400 150,c0 -50 200 -50 200 0,S800 10 800 150,s100 50 100 0,z"></path>
+    <path d="M300 300,Q400 500 500 300,q0 50 100 0,T700 300,t100 0,z " ></path>
+</svg>
+<h3>viewbox</h3>
+<svg width=100 height=100 viewbox="0 0 1000 1000">
+    <circle cx=500 cy=500 r=200></circle>
+</svg>
+<h3>transform</h3>
+<svg width=100% height=200 stroke=red stroke-width=1>
+    <circle cx=100 cy=100 r=50></circle>
+    <circle cx=100 cy=100 r=50 transform="translate(100,0)"></circle>
+    <rect x=1 y=1 width=50 height=50 ></rect>
+    <rect x=1 y=1 width=50 height=50 transform="rotate(45)"></rect>
+    <rect x=60 y=0 width=50 height=50 transform="rotate(45,60,0)"></rect>
+    <rect x=250 y=10 width=50 height=50 ></rect>
+    <rect x=250 y=10 width=50 height=50 transform="scale(1.5)"></rect>
+</svg>
+<h3>linearGradient</h3>
+<svg width=200 height=100 >
+    <defs>
+        <lineargradient id="demoLinear" gradientUnits="userSpaceOnUse" x1=0 y1=0 x2=200 y2=100>
+            <stop stop-color=black offset=0 stop-opacity=0.8></stop>
+            <stop stop-color=red offset=100%></stop>
+        </lineargradient>
+    </defs>
+    <rect fill="url(#demoLinear)" width=200 height=100></rect>
+</svg>
+<h3>radialGradient</h3>
+<svg width=200 height=100 >
+    <defs>
+        <radialGradient id="demoRadial" gradientUnits="userSpaceOnUse" cx=50 cy=50 r=50% fx=50 fy=50>
+            <stop stop-color=black offset=0 stop-opacity=1></stop>
+            <stop stop-color=red offset=100%></stop>
+        </radialGradient>
+    </defs>
+    <rect fill="url(#demoRadial)" width=200 height=100></rect>
+</svg>
+<h3>marker</h3>
+<svg width=100% height=300 stroke=black stroke-width=1>
+    <defs>
+        <marker id="demoMarker" markerUnits="userSpaceOnUse" refx=0 refy=4 orient=auto markerWidth=9 markerHeight=9>
+            <path d="M0,0 L0,9 L8,4 L0,0" style="fill: #000000;" />
+        </marker>
+    </defs>
+    <path d="M50,50 L300,50" marker-end="url(#demoMarker)" ></path>
+    <line x1=50 y1=80 x2=300 y2=80 marker-start="url(#demoMarker)"></line>
+    <path d="M50,110 L300,110 L300,200" marker-mid="url(#demoMarker)" fill=none ></path>
+</svg>
+<h3>pattern</h3>
+<svg width=100% height=300 stroke=black stroke-width=1>
+    <rect x=0 y=0 width=400 height=200 fill="url(#demoPattern)"></rect>
+</svg>
+<h3>clipPath</h3>
+<svg width=100% height=300 stroke=black stroke-width=1>
+    <defs>
+        <clipPath id="demoClippath" clipPathUnits="userSpaceOnUse" >
+            <circle cx=100 cy=100 r=50></circle>
+        </clipPath>
+    </defs>
+    <rect x=0 y=0 width=400 height=200 clip-path="url(#demoClippath)"></rect>
+</svg>
+<h3>mask</h3>
+<svg width="8cm" height="3cm" viewBox="0 0 800 300">
+    <defs>
+        <linearGradient id="Gradient" gradientUnits="userSpaceOnUse" x1="0" y1="0" x2="800" y2="0">
+            <stop offset="0" stop-color="white" stop-opacity="0" />
+            <stop offset="1" stop-color="white" stop-opacity="1" />
+        </linearGradient>
+        <mask id="Mask" maskUnits="userSpaceOnUse" x="0" y="0" width="800" height="300">
+            <rect x="0" y="0" width="800" height="300" fill="url(#Gradient)" />
+        </mask>
+        <text id="Text" x="400" y="200" font-family="Verdana" font-size="100" text-anchor="middle" > Masked text </text>
+    </defs>
+    <!-- 视窗的背景 -->
+    <use xlink:href="#Text" fill="blue" mask="url(#Mask)" />
+</svg>
+<h3>text</h3>
+<svg width=100% height=200>
+    <text x=0 y=22 fill=red>Hello World!</text>
+    <text x=0 y=44 fill=red>
+        Hello
+        <tspan x=50 y=66>World</tspan>
+        <tspan dx="2 4 6 8 10" dy="2 4 6 8 10">World</tspan>
+        <tspan rotate="20 40 60 80 100">World</tspan>
+    </text>
+    <text x=300 y=22 fill=red opacity=0.2>Hello World!</text>
+    <text x=300 y=88 fill=red stroke-width=1 stroke=yellow font-size=30>Hello World!</text>
+    <defs>
+        <path d="M600,22 L600,100 L800,100 L1000,0" id="path">
+    </defs>
+    <text fill=red >
+        <textPath xlink:href="#path">Hello World!Hello World!Hello World!Hello World!</textPath>
+    </text>
+    <text x=0 y=150 fill=red >这是一个神奇的世界！</text>
+</svg>
+<h3>滤镜练习</h3>
+<svg width=100% height=350>
+    <defs>
+        <filter id="demoBlur" x=0 y=0 width=100% height=100%>
+            <feGaussianBlur stdDeviation="2 10"></feGaussianBlur>
+        </filter>
+        <filter id="demoMophologyErode" x=0 y=0 width=100% height=100%>
+            <feMorphology operator="erode" radius=1.2></feMorphology>
+        </filter>
+        <filter id="demoMophologyDilate" x=0 y=0 width=100% height=100%>
+            <feMorphology operator="dilate" radius=1.2></feMorphology>
+        </filter>
+        <filter id="demoFlood" x=0 y=0 width=100% height=100% >
+            <feFlood flood-color="red" flood-opacity=0.5></feFlood>
+        </filter>
+        <filter id="demoTile" x=0 y=0 width=100% height=100% >
+            <feImage xlink:href="//gtms03.alicdn.com/tps/i3/TB1BTMZFVXXXXaCXXXXvYXxIpXX-70-69.png" result="imageTile" width=70 height=70></feImage>
+            <feTile in="imageTile" x=0 y=0 width=600 height=400></feTile>
+        </filter>
+        <filter id="demoDistantLight" x=0 y=0 width=100% height=100% >
+            <feDiffuseLighting surfaceScale="1" diffuseConstant="1" style="lighting-color:white">
+                <feDistantLight azimuth="135" elevation="60"/>
+            </feDiffuseLighting>
+        </filter>
+    </defs>
+    <rect x=20 y=20 width=100 height=50 fill=red stroke=black stroke-width=10 filter="url(#demoBlur)"></rect>
+    <text x=150 y=60 font-size=40>Hello World</text>
+    <text x=400 y=60 font-size=40 filter="url(#demoMophologyErode)">Hello World</text>
+    <text x=650 y=60 font-size=40 filter="url(#demoMophologyDilate)">Hello World</text>
+    <rect x=40 y=100 width=30 height=50 fill=green></rect>
+    <rect x=20 y=80 width=100 height=50 fill=red stroke=black stroke-width=10 filter="url(#demoFlood)"></rect>
+    <rect x=150 y=100 width=300 height=200 filter="url(#demoTile)"></rect>
+    <rect x=550 y=100 width=100 height=100 fill=red filter="url(#demoDistantLight)"></rect>
+</svg>
+<h3>脚本练习</h3>
+<svg width=100% height=100 id="demoJavascript">
+    <text x=50 y=50>Hello World</text>
+    <script type="text/javascript">
+        var text = demoJavascript.getElementsByTagName('text').item(0);
+        console.log('getNumberOfChars==='+text.getNumberOfChars())
+        console.log('getComputedTextLength==='+text.getComputedTextLength())
+        text.selectSubString(6,11);
+        text.style.fill = "red";
+        text.style.setProperty('fill','green');
+        console.log('style.fill===='+text.style.fill)
+        console.log('style.getPropertyValue===='+text.style.getPropertyValue('fill'))
+        console.log('getBBox()==');
+        console.log(demoJavascript.getBBox());
+        console.log('getCTM()==');
+        console.log(demoJavascript.getCTM());
+        console.log('currentScale==');
+        console.log(demoJavascript.currentScale);
+        console.log('currentTranslate==');
+        console.log(demoJavascript.currentTranslate);
+    </script>
+</svg>
+<h3>链接练习</h3>
+<svg width=100% height=100 id="demoLink" xlink:actuate＝"onLoad">
+    <a xlink:href="#demoLink" xlink:show="replace" target="_blank" xlink:actuate="">
+        <text x=0 y=50>Hello</text>
+    </a>
+</svg>
+<h3>CSS练习</h3>
+<style>
+    #cssDemo path{
+        stroke: black;
+        stroke-width: 2;
+        fill: white;
+    }
+    #cssDemo path:hover{
+        stroke: red;
+        fill: yellow;
+    }
+</style>
+<svg width="100%" height="201" id="cssDemo">
+    <rect id="" x="0" y="0" width="100%" height="100%" fill="url(#demoPattern)"></rect>
+
+    <g transform="translate(50 50)">
+        <path d="M24.188,0l15.375,38.438h-6.375L29.25,28.125H12.188L8.25,38.438H1.875L17.25,0H24.188z M20.813,5.062h-0.188 c-0.375,1.125-0.75,2.25-1.125,3.375c-0.126,0.252-2.062,5.25-5.812,15H27.75c-3.75-9.75-5.689-14.748-5.812-15 c0-0.123-0.064-0.375-0.188-0.75C21.123,6.188,20.813,5.314,20.813,5.062z"/>
+        <path d="M69.938,38.438h-26.25V0H49.5v33.938h20.438V38.438z"/>
+        <path d="M76.313,38.438V0h5.812v38.438H76.313z"/>
+        <path d="M108.188,38.438H90.75V0h16.5c8.124,0.252,12.437,3.313,12.938,9.188c-0.126,4.875-2.751,7.875-7.875,9v0.188 c5.874,1.002,9.062,4.063,9.562,9.188C121.875,34.813,117.311,38.438,108.188,38.438z M106.125,4.5h-9.562v11.812h9.562 c5.124-0.123,7.749-2.186,7.875-6.188C113.874,6.375,111.249,4.5,106.125,4.5z M106.875,21H96.563v13.125h10.688 c5.499,0,8.25-2.312,8.25-6.938C115.248,23.188,112.374,21.126,106.875,21z"/>
+        <path d="M147,0l15.375,38.438H156l-3.938-10.312H135l-3.938,10.312h-6.375L140.063,0H147z M143.625,5.062h-0.188 c-0.375,1.125-0.75,2.25-1.125,3.375c-0.126,0.252-2.062,5.25-5.812,15h14.062c-3.75-9.75-5.689-14.748-5.812-15 c0-0.123-0.064-0.375-0.188-0.75C143.936,6.188,143.625,5.314,143.625,5.062z"/>
+        <path d="M183.938,38.438H166.5V0H183c8.124,0.252,12.437,3.313,12.938,9.188c-0.126,4.875-2.751,7.875-7.875,9v0.188 c5.874,1.002,9.062,4.063,9.562,9.188C197.625,34.813,193.061,38.438,183.938,38.438z M181.875,4.5h-9.562v11.812h9.562 c5.124-0.123,7.749-2.186,7.875-6.188C189.624,6.375,186.999,4.5,181.875,4.5z M182.625,21h-10.312v13.125H183 c5.499,0,8.25-2.312,8.25-6.938C190.998,23.188,188.124,21.126,182.625,21z"/>
+        <path d="M222.75,0l15.375,38.438h-6.375l-3.938-10.312H210.75l-3.938,10.312h-6.375L215.812,0H222.75z M219.375,5.062h-0.188 c-0.375,1.125-0.75,2.25-1.125,3.375c-0.125,0.252-2.062,5.25-5.812,15h14.062c-3.75-9.75-5.689-14.748-5.812-15 c0-0.123-0.064-0.375-0.188-0.75C219.685,6.188,219.375,5.314,219.375,5.062z"/>
+    </g>
+</svg>

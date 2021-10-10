@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hello D3</title>
+  <script src="d3.js"></script>
+</head>
+<body>
+<script>
+  function render(data){
+    var demo = d3.select('body')
+        .selectAll('p')
+        .data(data, function (d) {
+          return d;
+        });
+    demo.enter()
+        .append('p')
+        .style('width', 0+'px')
+        .style('background', '#eee')
+    demo
+        .text(function (d) {
+          return d;
+        })
+        .transition()
+        .duration(1000)
+        .style('width', function (d) {
+          return d+'px';
+        })
+    demo.exit()
+        .transition()
+        .duration(1000)
+        .style('width', 0+'px')
+        .remove();
+  }
+
+  render([100,300,500]);
+
+  setTimeout(function(){
+    render([300,500,1000]);
+  },1000)
+</script>
+</body>
+</html>

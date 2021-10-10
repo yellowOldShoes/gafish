@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hello D3</title>
+  <script src="d3.js"></script>
+  <style>
+    path{
+      fill: none;
+      stroke: #000;
+      shape-rendering: crispEdges;
+    }
+    line {
+        fill: none;
+        stroke: #000;
+        shape-rendering: crispEdges;
+    }
+
+  </style>
+</head>
+<body>
+  <script>
+    // 1
+    var svg = d3.select('body').append('svg')
+      .attr('class','axis')
+      .attr('width',500)
+      .attr('height',500)
+    var scale = d3.scale.linear()
+      .domain([0,1000])
+      .range([0, 400])
+
+    var axisx = d3.svg.axis()
+      .scale(scale)
+      .orient('top')
+      .ticks(5)
+
+    svg.append('g')
+      .classed('x-axis',true)
+      .attr('transform',function() {
+        return 'translate(50,50)';
+      })
+      .call(axisx)
+
+    var axisy = d3.svg.axis()
+      .scale(scale)
+      .orient('left')
+      .ticks(5)
+
+    svg.append('g')
+      .classed('y-axis',true)
+      .attr('transform',function() {
+        return 'translate(50,50)';
+      })
+      .call(axisy)
+
+    d3.selectAll('g.x-axis g.tick')
+      .append('line')
+      .attr('x1',0)
+      .attr('y1',0)
+      .attr('x2',0)
+      .attr('y2',400)
+
+
+    d3.selectAll('g.y-axis g.tick')
+      .append('line')
+      .attr('x1',0)
+      .attr('y1',0)
+      .attr('x2',400)
+      .attr('y2',0)
+  </script>
+</body>
+</html>

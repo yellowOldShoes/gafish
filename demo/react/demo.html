@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Demo</title>
+  <script src="react.js"></script>
+  <script src="react-dom.js"></script>
+  <script src="browser.min.js"></script>
+  <style>
+  #container {   padding: 50px;   background-color: #EEE; }
+  #container h1 {   font-size: 48px;   font-family: sans-serif;   color: #0080a8; }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+  <script type="text/babel">
+    var num = Math.random();
+    var container = document.querySelector('#container');
+    var Module = React.createClass({
+      handleClick: function(){
+        alert(this.props.name)
+      },
+      render: function(){
+        return (
+          <div onClick={this.handleClick}>
+            click
+          </div>
+        );
+      }
+    });
+    ReactDOM.render(
+      <div>
+        <h1>Gafish</h1>
+        <span>{num}</span>
+        {
+          num > 0.5 && (
+            <div>
+              this is {num}
+            </div>
+          )
+        }
+        <Module name="haha" />
+      </div>,
+      container
+    );
+  </script>
+
+</body>
+</html>

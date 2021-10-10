@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hello AngularJS</title>
+  <script src="angular1.2.29.js"></script>
+</head>
+<body>
+<!--
+<div ng-app="myapp">
+    <div ng-controller="mycontroller">
+        <input type="text" ng-model="to"><br>
+        <textarea name="" id="" cols="30" rows="10" ng-model="emailbody"></textarea><br>
+        {{emailbody}} <br>
+        {{previewText}} <br>
+    </div>
+</div>
+<script>
+    var app = angular.module('myapp',[]);
+    app.controller('mycontroller', function($scope, $parse){
+        $scope.$watch('emailbody', function(newValue, oldValue, scope){
+            var parseFun = $parse('emailbody');
+            $scope.previewText = parseFun(scope);
+        })
+    });
+</script>
+ -->
+
+<!--
+<div ng-app="myapp">
+    <div ng-controller="mycontroller">
+        <input type="text" ng-model="to"><br>
+        <textarea name="" id="" cols="30" rows="10" ng-model="emailbody"></textarea><br>
+        {{emailbody}} <br>
+        {{previewText}} <br>
+    </div>
+</div>
+<script>
+    var app = angular.module('myapp',[]);
+    app.controller('mycontroller', function($scope, $interpolate){
+        $scope.$watch('emailbody', function(newValue, oldValue, scope){
+            var template = $interpolate(newValue);
+            $scope.previewText = template({to:$scope.to});
+        })
+    });
+</script>
+-->
+
+<div ng-app="myapp">
+    <div ng-controller="mycontroller">
+        <input type="text" ng-model="to"><br>
+        <textarea name="" id="" cols="30" rows="10" ng-model="emailbody"></textarea><br>
+        @@emailbody## <br>
+        @@previewText## <br>
+    </div>
+</div>
+<script>
+    var app = angular.module('myapp',[]);
+    app.config(['$interpolateProvider', function($interpolateProvider){
+        $interpolateProvider.startSymbol('@@');
+        $interpolateProvider.endSymbol('##');
+    }]);
+    app.controller('mycontroller', function($scope, $interpolate){
+        $scope.$watch('emailbody', function(newValue, oldValue, scope){
+            if (!newValue) return;
+            var template = $interpolate(newValue);
+            $scope.previewText = template({to:$scope.to});
+        })
+    });
+</script>
+
+
+</body>
+</html>

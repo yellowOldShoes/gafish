@@ -1,0 +1,78 @@
+@font-face {
+     font-family: 'ruiboti';
+     src: url('ruibo.eot');
+     src: url('ruibo.eot?#iefix') format('embedded-opentype'),
+          url('ruibo.woff') format('woff'),
+          url('ruibo.ttf') format('truetype'),
+          url('ruibo.svg#ruibo') format('svg');
+         font-weight: normal;
+         font-style: normal;
+}
+
+*{
+    padding: 0;
+    margin: 0;
+    font-size: 12px;
+}
+ul,li{
+    list-style: none;
+}
+body{
+    color: #000080;
+    background: #eee;
+}
+footer{
+    padding-top: 50px;
+    text-align: center;
+    opacity: 0.3;
+}
+.clearfix:after{
+    display: block;
+    visibility: hidden;
+    font-size: 0;
+    height: 0;
+    content: '';
+    clear: both;
+}
+.main{
+    padding: 10px;
+}
+.column{
+    width: 23%;
+    float: left;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #000080;
+    border-radius: 5px;
+    margin: 1%;
+    background: #fff;
+}
+.column h3{
+    font-family: 'ruiboti';
+    font-size: 24px;
+    line-height: 50px;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 10px;
+}
+.column ul{
+}
+.column li{
+    line-height: 2;
+    white-space: nowrap;
+}
+.column li a{
+    color: #333;
+    font-size: 14px;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 200ms;
+}
+.column li a:hover{
+    text-indent: 1em;
+    color: #000;
+    transform: skewX(180deg);
+}
+.column li span{
+    color: #ddd;
+    padding-left: 5px;
+}

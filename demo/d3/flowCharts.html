@@ -1,0 +1,210 @@
+<!DOCTYPE HTML>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello D3</title>
+    <script src="d3.js"></script>
+    <style>
+        svg {
+            border: 1px solid #999;
+            background: #eee;
+        }
+        .node circle {
+            cursor: pointer;
+            stroke: #3182bd;
+            stroke-width: 0.5px;
+            fill: #c6dbef;
+        }
+
+        .node text {
+            font: 10px sans-serif;
+            pointer-events: none;
+            text-anchor: middle;
+        }
+
+        line.link {
+            fill: none;
+        }
+    </style>
+</head>
+<body>
+
+
+<script>
+
+    // 配置
+    var base = 5000;
+    var coord = {
+        "a": {"x": 100, "y": 400 },
+        "b": {"x": 300, "y": 300 },
+        // "c": {"x": 300, "y": 400 },
+        "d": {"x": 300, "y": 500 },
+        "e": {"x": 600, "y": 300 },
+        "f": {"x": 600, "y": 400 }
+    }
+
+    // 原始数据
+    var dataset = {
+        "a": {
+            name: "AAA",
+            value: 20000,
+            relations: [
+                {
+                    target: "b",
+                    value: 0
+                },
+                {
+                    target: "c",
+                    value: 0
+                }
+            ]
+        },
+        "b": {
+            name: "BBB",
+            value: 20000,
+            relations: [
+                {
+                    target: "c",
+                    value: 0
+                }
+            ]
+        },
+        "c": {
+            name: "CCC",
+            value: 20000,
+            relations: [
+                {
+                    target: "d",
+                    value: 0
+                }
+            ]
+        },
+        "d": {
+            name: "DDD",
+            value: 20000,
+            relations: [
+                {
+                    target: "e",
+                    value: 0
+                }
+            ]
+        },
+        "e": {
+            name: "EEE",
+            value: 20000,
+            relations: [
+                {
+                    target: "b",
+                    value: 0
+                }
+            ]
+        },
+        "f": {
+            name: "FFF",
+            value: 20000,
+            relations: [
+                {
+                    target: "b",
+                    value: 0
+                }
+            ]
+        },
+    }
+
+    // 数据处理
+    dataset = function(){
+        function randomCoord(){
+            return Math.floor(Math.random()*600+100)
+        }
+        for(var d in dataset){
+            dataset[d].x = coord[d] && coord[d].x || randomCoord();
+            dataset[d].y = coord[d] && coord[d].y || randomCoord();
+            dataset[d].id = d;
+            // 模拟数据
+            dataset[d].value = Math.floor(Math.random()*10000+10);
+        };
+        return dataset;
+    }();
+    var nodes = d3.values(dataset);
+    var links = function(){
+        var links = [];
+        nodes.forEach(function(node){
+            var source = dataset[node.id];
+            node.relations.forEach(function(relation){
+                function recurse(relation) {
+                    relation.source = source;
+                    relation.target = dataset[relation.target];
+                    // 模拟数据
+                    relation.value = Math.floor(Math.random()*10000+10);
+                    links.push(relation);
+                }
+                recurse(relation);
+            });
+        });
+        return links;
+    }();
+    console.log(links)
+    console.log(nodes)
+
+    // 图形创建
+    var width = 800;
+    var height = 800;
+    var svg = d3.select("body")
+        .append("svg")
+        .attr("width", width)
+        .attr("height", height);
+
+    //添加连线
+    var link = svg.selectAll(".link")
+        .data(links);
+    link.exit().remove();
+    link.enter()
+        .insert("line", ".node")
+        .attr("class", "link")
+        .attr('stroke-width', function(d) {
+            return (Math.max(Math.sqrt(d.value) / 10,1)) + 'px';
+        })
+        .attr('stroke', function(d) {
+            var percent = Math.max(1-d.value/base,0);
+            var color = Math.floor(Math.min(255*percent,150));
+            return 'rgb(255,'+ color +','+ 150 +')';
+        })
+        .attr("x1", function(d) {
+            return d.source.x;
+        })
+        .attr("y1", function(d) {
+            return d.source.y;
+        })
+        .attr("x2", function(d) {
+            return d.target.x;
+        })
+        .attr("y2", function(d) {
+            return d.target.y;
+        });
+
+    //添加节点
+    var node = svg.selectAll(".node")
+        .data(nodes);
+    node.exit().remove();
+
+    var nodeEnter = node.enter().append("g")
+        .attr("class", "node")
+    nodeEnter.append("circle")
+        .attr("r", function(d) {
+            return Math.max(Math.sqrt(d.value) / 10,5);
+        })
+        .attr("transform", function(d) {
+            return "translate(" + d.x + "," + d.y + ")";
+        })
+    nodeEnter.append("text")
+        .attr("dy", "3em")
+        .text(function(d) {
+            return d.name;
+        })
+        .attr("transform", function(d) {
+            return "translate(" + d.x + "," + d.y + ")";
+        });
+</script>
+
+
+</body>

@@ -1,0 +1,102 @@
+---
+layout: default
+title:  SVG演示-月亮星空
+---
+
+<style>
+    html,
+    body{
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        line-height: 0;
+        font-size: 0;
+        background: #001122;
+    }
+</style>
+<svg width=100% height=100% viewBox="-400 -300 800 600" preserveAspectRatio="xMidYMid slice">
+    <defs>
+        <polygon id="starRef" points="0 -10 2 -2 10 0 2 2 0 10 -2 2 -10 0 -2 -2" fill="#ffffff" / >
+    </defs>
+    <g id="reflact">
+        <g id="startGroup"></g>
+        <g id="light" transform="translate(300,0)">
+            <defs id="">
+                <linearGradient id="tower" x1="0" y1="0" x2="1" y2="0">
+                    <stop offset="0" stop-color="#999"></stop>
+                    <stop offset="1" stop-color="#333"></stop>
+                </linearGradient>
+                <radialGradient id="light">
+                    <stop offset="0" stop-color="rgba(255,255,255,.8)"></stop>
+                    <stop offset="1" stop-color="rgba(255,255,255,0)"></stop>
+                </radialGradient>
+                <clipPath id="lightClip">
+                    <polygon points="0 0 -400 10 -400 -10" fill="#fff">
+                        <animateTransform
+                            attributeName="transform"
+                            attributeType="XML"
+                            type="rotate"
+                            form="0"
+                            to="360"
+                            dur="10s"
+                            repeatCount="indefinite"
+                        ></animateTransform>
+                    </polygon>
+                </clipPath>
+            </defs>
+            <polygon points="0 0 2 50 -2 50" fill="url(#tower)"></polygon>
+            <ellipse cx="0" cy="0" rx="300" ry="100" fill="url(#light)" clip-path="url(#lightClip)"></ellipse>
+            <circle x="0" y="0" r="2" fill="#fff"></circle>
+        </g>
+        <mask id="moonMask">
+            <circle cx="-250" cy="-150" r="80" fill="#fff"></circle>
+            <circle cx="-220" cy="-180" r="80" fill="#000"></circle>
+        </mask>
+        <circle cx="-250" cy="-150" r="80" fill="yellow" mask="url(#moonMask)"></circle>
+    </g>
+    <g transform="translate(0 50)" mask="url(#fading)">
+        <defs>
+            <linearGradient id="fade" x1=0 y1=0 x2=0 y2=1>
+                <stop offset=0 stop-color="rgba(255,255,255,.3)" />
+                <stop offset=1 stop-color="rgba(255,255,255,0)" />
+            </linearGradient>
+            <mask id="fading">
+                <rect x=-400 y=0 width=800 height=200 fill="url(#fade)"/>
+            </mask>
+        </defs>
+        <use xlink:href="#reflact" transform="scale(1,-1) translate(0 -50)"/>
+    </g>
+    <line x1=-400 y1=50 x2=400 y2=50 stroke=white />
+</svg>
+<script>
+
+var SVGNS = '//www.w3.org/2000/svg';
+var XLINKNS = '//www.w3.org/1999/xlink';
+
+function use (ref) {
+    var _use = document.createElementNS(SVGNS,'use');
+    _use.setAttributeNS(XLINKNS,'xlink:href','#'+ref.id);
+    return _use;
+}
+
+function random (min,max) {
+    return min + (max-min)*Math.random();
+}
+
+function renderStar () {
+    var startCount = 500;
+    var starRef = document.getElementById('starRef');
+
+    var star
+    while(startCount--){
+        star = use(starRef);
+        star.setAttribute('opacity',random(0.1,0.3));
+        star.setAttribute('transform','translate('+random(-400,400)+','+random(-300,50)+') scale('+ random(0.1,0.6) +')');
+        startGroup.appendChild(star);
+    }
+}
+
+renderStar();
+
+</script>

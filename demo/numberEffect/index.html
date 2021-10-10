@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DEMO</title>
+  <style>
+    body{
+      font-family: 'Microsoft YaHei';
+      text-align: center;
+    }
+    h1,h2{
+      color: #3aa588;
+    }
+    div{
+      color: #000;
+      font-size: 48px;
+    }
+  </style>
+  <script src="http://g.alicdn.com/hi/modulex/5.0.0/seed.js"></script>
+  <script>
+      require.config({
+          combine : true
+      });
+      modulex.use(['node','./numberEffect'],function(Node, NumberAnimate){
+        /**
+         * 将数字按国际标准添加分号
+         * @param  {[Number]} number [数字]
+         */
+        function addSemicolon(number) {
+            // return number;
+            number = number.toString();
+            var len = Math.ceil(number.length/3);
+            var nums = [];
+            var firstLen = number.length%3;
+            var index = len;
+            var substr = function(){
+                var length = (index == len && firstLen) ? firstLen : 3;
+                nums.push(number.substr(-3*index,length));
+                index--;
+                if (index) {
+                    substr();
+                }
+            };
+            substr();
+            return nums.join(',');
+        }
+
+        /**
+         * 数字递增
+         */
+        var digitAnim1 = new NumberAnimate({
+            el: Node.all('#demo1'),
+            animationTimes: [500,800,500]
+        });
+        var index1 = 1000;
+        setInterval(function() {
+          digitAnim1.set(index1 += 1234);
+        }, 1000)
+
+        /**
+         * 数字递减
+         */
+        var digitAnim2 = new NumberAnimate({
+            el: Node.all('#demo2'),
+            animationTimes: [500,800,500]
+        });
+        var index2 = 1000000;
+        setInterval(function() {
+          digitAnim2.set(index2 -= 123);
+        }, 1000)
+
+        /**
+         * 标准数字分隔
+         */
+        var digitAnim3 = new NumberAnimate({
+            el: Node.all('#demo3'),
+            animationTimes: [500,800,500]
+        });
+        var index3 = 555;
+        setInterval(function() {
+          digitAnim3.set(addSemicolon(index3 += 1234));
+        }, 1000)
+
+        /**
+         * 带小数点
+         */
+        var digitAnim4 = new NumberAnimate({
+            el: Node.all('#demo4'),
+            animationTimes: [500,800,500]
+        });
+        var index4 = 1000;
+        setInterval(function() {
+          digitAnim4.set((index4 += 12.34).toFixed(2));
+        }, 1000)
+
+        /**
+         * 负数
+         */
+        var digitAnim5 = new NumberAnimate({
+            el: Node.all('#demo5'),
+            animationTimes: [500,800,500]
+        });
+        var index5 = 0;
+        setInterval(function() {
+          digitAnim5.set(index5 -= 1234);
+        }, 1000)
+      });
+  </script>
+</head>
+<body>
+  <h1>NumberEffect演示</h1>
+  <h2>数字递增</h2>
+  <div id="demo1">0</div>
+  <h2>数字递减</h2>
+  <div id="demo2">0</div>
+  <h2>标准数字分隔</h2>
+  <div id="demo3">0</div>
+  <h2>带小数点</h2>
+  <div id="demo4">0</div>
+  <h2>负数</h2>
+  <div id="demo5">0</div>
+</body>
+</html>

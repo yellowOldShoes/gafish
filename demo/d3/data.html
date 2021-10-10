@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hello D3</title>
+  <script src="d3.js"></script>
+  <style>
+  #container{
+    overflow: hidden;
+  }
+  #container3 div{
+    /*float: left;*/
+    background: #999;
+  }
+  </style>
+</head>
+<body>
+  <div id="container1"></div>
+  <div id="container2"></div>
+  <div id="container3"></div>
+  <div id="container4"></div>
+  <script>
+    // 1
+    function render1(data) {
+      d3.select('#container1').selectAll('div.h-bar1')
+        .data(data)
+        .enter()
+        .append('div')
+          .attr('class','h-bar1')
+        .attr('style','background:#eee')
+        .append('span');
+      d3.select('#container1').selectAll('div.h-bar1')
+        .data(data)
+        .style('width',function(d) {
+          return d*3+'px';
+        })
+        .select('span')
+        .text(function(d) {
+          return d;
+        });
+      d3.select('#container1').selectAll('div.h-bar1')
+        .data(data)
+        .exit()
+        .remove()
+    }
+    var data1 = [10,20,16,50,88,44,19,90];
+    setInterval(function() {
+      data1.shift();
+      data1.push(Math.round(Math.random()*200));
+      render1(data1);
+    }, 500)
+    render1(data1);
+    // 2
+    var data2 = [
+      {width: 10,color:23},
+      {width: 20,color:40},
+      {width: 30,color:22},
+      {width: 40,color:5}
+    ]
+    var colorScale = d3.scale.linear().domain([0,100]).range(['#add8e6','blue']);
+    function render2(data) {
+      d3.select('#container2').selectAll('.h-bar2')
+        .data(data)
+        .enter()
+        .append('div')
+          .attr('class','h-bar2')
+        .append('span')
+      d3.select('#container2').selectAll('.h-bar2')
+        .data(data)
+        .exit()
+        .remove()
+      d3.select('#container2').selectAll('.h-bar2')
+        .data(data)
+          // .attr('class','h-bar2')
+        .style('width',function(d) {
+          return d.width*10+'px';
+        })
+        .style('background-color',function(d) {
+          return colorScale(d.color);
+        })
+        .select('span')
+          .text(function(d) {
+            return d.width
+          })
+    }
+    function randomValue() {
+      return Math.round(Math.random()*100)
+    }
+    setInterval(function() {
+      data2.shift();
+      data2.push({width:randomValue(),color:randomValue()});
+      render2(data2);
+    }, 500)
+    render2(data2);
+    // 3
+    var data = [];
+    var next = function(x){
+      return 15+x*x;
+    }
+    function render3() {
+      data.push(next);
+      var selection = d3.select('#container3')
+        .selectAll('div')
+        .data(data)
+      selection.enter().append('div').append('span');
+      selection.exit().remove();
+      selection.attr('class','v-bar')
+        .style('width',function(d,i){
+          return d(i)+'px';
+        })
+        .select('span')
+          .text(function(d,i) {
+            return d(i);
+          })
+      if (data.length >= 10) {
+        data = [];
+      }
+    }
+    setInterval(function() {
+      render3();
+    }, 500);
+    // 4
+    var data4 = [1,4,8,12,55,22,991,33,110,883]
+    console.log('min==%s',d3.min(data4))
+    console.log('max==%s',d3.max(data4))
+    console.log('extent==%s', d3.extent(data4).toString())
+    console.log('sum==%s',d3.sum(data4))
+    console.log('median==%s',d3.median(data4))
+    console.log('mean==%s',d3.mean(data4))
+    console.log('sort==%s',data4.sort(d3.ascending).toString())
+    console.log('sort==%s',data4.sort(d3.descending).toString())
+
+  </script>
+</body>
+</html>
